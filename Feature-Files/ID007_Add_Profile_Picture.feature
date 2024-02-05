@@ -1,8 +1,6 @@
 Feature: Add Profile Picture
   
-  As a SmartEats user
-  the user want to be able to add or change a profile picture to his/her account
-  So that others and including his/herself can see his/her profile picture
+As a user, I want to be able to add or change my profile picture to my account, so that others and including myself can see my profile picture.
 
 Scenario: Upload profile picture (Normal Flow)
     Given the user is logged in to his/her SmartEats account
