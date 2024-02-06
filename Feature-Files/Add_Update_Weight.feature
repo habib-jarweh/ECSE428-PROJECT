@@ -1,4 +1,4 @@
-Feature: Add Current Weight 
+Feature: Add/Update Current Weight 
   
 As a user, I want to be able to add or change my weight in my account, so that I can track my weight changes.
 
