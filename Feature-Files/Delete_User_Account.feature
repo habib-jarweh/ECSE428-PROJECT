@@ -6,7 +6,7 @@ As a user, I wish to permanently delete my account and personal information from
     Given the user with "<username>" and "<password>" is logged in
     When the user attempts to delete their account
     Then they are asked to confirm the action by providing their password
-    Then the user with "<username>"  inputs their "<password>" correctly
+    When the user with "<username>"  inputs their "<password>" correctly
     Then the account with "<username>" will no longer exist in the system
 
     Examples: 
@@ -20,11 +20,11 @@ As a user, I wish to permanently delete my account and personal information from
     Given the user with "<username>" and "<password>" is logged in
     When the user attempts to delete their account
     Then they are asked to confirm the action by providing their password
-    Then the user with "<username>"  inputs their "<password>" incorrectly
+    When the user with "<username>"  inputs a "<wrong_password>" incorrectly
     Then the account with "<username>" will still exist in the system
 
     Examples: 
-      | username   | password |
-      | john123    |          |
-      | micheal344 | s22002   |
-      | kim222     | DASAFSF  |
+      | username   | password  | wrong_password |
+      | john123    | xuz24cdr  |                |
+      | micheal344 | s22002sdd | s22002         |
+      | kim222     | dasafsf   | DASAFSF        |
