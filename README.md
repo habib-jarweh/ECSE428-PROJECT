@@ -1,6 +1,6 @@
 # ECSE428-PROJECT
 
-### CHECK WHATSAPP GROUP DESCRIPTION FOR PASSWORD
+NOTE: CHECK WHATSAPP GROUP DESCRIPTION FOR PASSWORD
 
 ### To access the database server locally via terminal (you need to have psql installed on your device first):
 
