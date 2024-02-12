@@ -15,3 +15,8 @@ run $ PGSSLMODE=require PGPASSWORD=**** psql -U app -h adequately-complete-ancho
         String url = String.format("jdbc:postgresql://%s/%s?sslmode=%s", host, database, sslMode);
 
 
+### To run the frontend, go to the frontend directory on terminal and run:
+        npm start
+
+
+
