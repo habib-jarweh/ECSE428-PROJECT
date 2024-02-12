@@ -1,39 +1,60 @@
+package ecse428.backend.model;
+
+import java.util.Set;
+
+import ecse428.backend.model.SmartEats.DieteryRestriction;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+
+@Entity
 public class Meal {
+    
+
     private String mealName;
     private String description;
-    private String[] reviews;
+    private double rating;
+    private double price;
+    private Set<DieteryRestriction> dietaryRestrictions; 
+    private Set<MealItem> mealItems;
 
-    public Meal(String mealName, String description, String[] reviews) {
+    @Id
+    public String getMealName(){
+        return mealName;
+    }
+    public String getDescription(){
+        return description;
+    }
+    public double getRating(){
+        return rating;
+    }
+    public double getPrice(){
+        return price;
+    } 
+    public Set<DieteryRestriction> getDietaryRestrictions() {
+        return this.dietaryRestrictions;
+    }
+    @OneToMany(cascade = { CascadeType.ALL })
+    public Set<MealItem> getMealItems(){
+        return mealItems;
+    }
+    public void setMealName(String mealName){
         this.mealName = mealName;
-        this.description = description;
-        this.reviews = reviews;
     }
-
-    //SETTERS
-
-    public void setMealName(String mealName) {
-        this.mealName = mealName;
+    public void setDescriotion(String desc){
+        this.description = desc;
     }
-
-    public void setDescription(String description) {
-        this.description = description;
+    public void setRating(double rating){
+        this.rating = rating;
     }
-
-    public void setReviews(String[] reviews) {
-        this.reviews = reviews;
+    public void setPrice(double price){
+        this.price = price;
     }
-
-    //GETTERS
-
-    public String getMealName() {
-        return this.mealName;
+    public void setDietaryRestriction(Set<DieteryRestriction> dietaryRestrictions) {
+        this.dietaryRestrictions = dietaryRestrictions;
     }
-
-    public String getDescription() {
-        return this.description;
-    }
-
-    public String[] getReviews() {
-        return this.reviews;
-    }
+    public void setMealItems(Set<MealItem> mealItems){
+        this.mealItems = mealItems;
+    }   
 }
