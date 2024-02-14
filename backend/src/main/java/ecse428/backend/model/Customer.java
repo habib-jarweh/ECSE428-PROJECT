@@ -25,7 +25,7 @@ public class Customer extends Account{
         this.weightGoal = weightGoal;
     }
 
-    public void setDietaryRestriction(Set<DieteryRestriction> dietaryRestrictions) {
+    public void setDietaryRestrictions(Set<DieteryRestriction> dietaryRestrictions) {
         this.dietaryRestrictions = dietaryRestrictions;
     }
 

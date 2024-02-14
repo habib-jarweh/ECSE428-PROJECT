@@ -42,7 +42,7 @@ public class Meal {
     public void setMealName(String mealName){
         this.mealName = mealName;
     }
-    public void setDescriotion(String desc){
+    public void setDescription(String desc){
         this.description = desc;
     }
     public void setRating(double rating){
@@ -51,7 +51,7 @@ public class Meal {
     public void setPrice(double price){
         this.price = price;
     }
-    public void setDietaryRestriction(Set<DieteryRestriction> dietaryRestrictions) {
+    public void setDietaryRestrictions(Set<DieteryRestriction> dietaryRestrictions) {
         this.dietaryRestrictions = dietaryRestrictions;
     }
     public void setMealItems(Set<MealItem> mealItems){
