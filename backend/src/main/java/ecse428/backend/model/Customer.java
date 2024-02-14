@@ -1,53 +1,49 @@
 package ecse428.backend.model;
 
-import ecse428.backend.model.SmartEats.DieteryRestriction;
+import ecse428.backend.model.SmartEats.DietaryRestriction;
 
 import java.util.Set;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
 
 @Entity
 public class Customer extends Account{
 
-    private Double weight;
-    private Double weightGoal;
-    private Set<DieteryRestriction> dietaryRestrictions; 
-    private Set<MealOrder> mealOrders;
+    private String billingAddress;
+    private Integer points;
+    private Set<DietaryRestriction> dietaryRestrictions;
+    private String pfpImageLink;
 
-    //SETTERS
-    public void setWeight(Double weight) {
-        this.weight = weight;
+    public String getBillingAddress() {
+        return this.billingAddress;
     }
 
-    public void setWeightGoal(Double weightGoal) {
-        this.weightGoal = weightGoal;
+    public void setBillingAddress(String billingAddress) {
+        this.billingAddress = billingAddress;
     }
 
-    public void setDietaryRestrictions(Set<DieteryRestriction> dietaryRestrictions) {
-        this.dietaryRestrictions = dietaryRestrictions;
+    public Integer getPoints() {
+        return this.points;
     }
 
-    public void setOrders(Set<MealOrder> orders){
-        this.mealOrders = orders;
+    public void setPoints(Integer points) {
+        this.points = points;
     }
 
-    //GETTERS
-    public Double getWeight() {
-        return this.weight;
-    }
-
-    public Double getWeightGoal() {
-        return this.weightGoal;
-    }
-
-    public Set<DieteryRestriction> getDietaryRestrictions() {
+    public Set<DietaryRestriction> getDietaryRestrictions() {
         return this.dietaryRestrictions;
     }
 
-    @OneToMany(cascade = { CascadeType.ALL })
-    public Set<MealOrder> getOrders(){
-        return mealOrders;
+    public void setDietaryRestrictions(Set<DietaryRestriction> dietaryRestrictions) {
+        this.dietaryRestrictions = dietaryRestrictions;
     }
+
+    public String getPfpImageLink() {
+        return this.pfpImageLink;
+    }
+
+    public void setPfpImageLink(String pfpImageLink) {
+        this.pfpImageLink = pfpImageLink;
+    }
+    
 }

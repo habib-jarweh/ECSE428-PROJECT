@@ -11,74 +11,87 @@ import jakarta.persistence.OneToMany;
 public class SmartEats {
     
    
-    public enum DieteryRestriction {
+    public enum DietaryRestriction {
         Peanut, Dairy, Gluten 
     }
 
-    private long systemID;
+    public enum Ingredient {
+        Peanut, Milk, Flour, Egg, Meat, Butter, Beef, Chicken, Fish, Rice
+    }
+
+    private Long systemID;
+    private Set<Account> accounts;
     private Set<Customer> customers;
     private Set<Admin> admins;
+    private Set<Order> orders;
     private Set<Meal> meals;
     private Set<MealItem> mealItems;
-    private Set<MealOrder> orders;
-     
+
+
+
 
     @Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	public Long getSystemID() {
-		return systemID;
-	}
-
-
-    @OneToMany(cascade = { CascadeType.ALL })
-    public Set<Customer> getCustomers(){
-        return customers;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    public Long getSystemID() {
+        return this.systemID;
     }
 
-    @OneToMany(cascade = { CascadeType.ALL })
-    public Set<Admin> getAdmins(){
-        return admins;
+    public void setSystemID(Long systemID) {
+        this.systemID = systemID;
     }
 
-    @OneToMany(cascade = { CascadeType.ALL })
-    public Set<Meal> getMeals(){
-        return meals;
+    @OneToMany(cascade = {CascadeType.ALL})
+    public Set<Account> getAccounts() {
+        return this.accounts;
     }
 
-    
-    @OneToMany(cascade = { CascadeType.ALL })
-    public Set<MealOrder> getOrders(){
-        return orders;
+    public void setAccounts(Set<Account> accounts) {
+        this.accounts = accounts;
     }
 
-     
-    @OneToMany(cascade = { CascadeType.ALL })
-    public Set<MealItem> getMealItems(){
-        return mealItems;
+    @OneToMany(cascade = {CascadeType.ALL})
+    public Set<Customer> getCustomers() {
+        return this.customers;
     }
 
-    public void setCustomers(Set<Customer> customers){
+    public void setCustomers(Set<Customer> customers) {
         this.customers = customers;
     }
 
-    public void setAdmins(Set<Admin> admins){
+    @OneToMany(cascade = {CascadeType.ALL})
+    public Set<Admin> getAdmins() {
+        return this.admins;
+    }
+
+    public void setAdmins(Set<Admin> admins) {
         this.admins = admins;
     }
 
-    public void setSystemID(long ID){
-        this.systemID = ID;
+    @OneToMany(cascade = {CascadeType.ALL})
+    public Set<Order> getOrders() {
+        return this.orders;
     }
 
-    public void setMeals(Set<Meal> meals){
-        this.meals = meals;
-    }
-
-    public void setOrders(Set<MealOrder> orders){
+    public void setOrders(Set<Order> orders) {
         this.orders = orders;
     }
 
-    public void setMealItems(Set<MealItem> mealItems){
+    @OneToMany(cascade = {CascadeType.ALL})
+    public Set<Meal> getMeals() {
+        return this.meals;
+    }
+
+    public void setMeals(Set<Meal> meals) {
+        this.meals = meals;
+    }
+
+    @OneToMany(cascade = {CascadeType.ALL})
+    public Set<MealItem> getMealItems() {
+        return this.mealItems;
+    }
+
+    public void setMealItems(Set<MealItem> mealItems) {
         this.mealItems = mealItems;
-    }   
+    }
 
 }
