@@ -14,7 +14,7 @@ public class Customer extends Account{
     private Double weight;
     private Double weightGoal;
     private Set<DieteryRestriction> dietaryRestrictions; 
-    private Set<Order> orders;
+    private Set<MealOrder> mealOrders;
 
     //SETTERS
     public void setWeight(Double weight) {
@@ -29,8 +29,8 @@ public class Customer extends Account{
         this.dietaryRestrictions = dietaryRestrictions;
     }
 
-    public void setOrders(Set<Order> orders){
-        this.orders = orders;
+    public void setOrders(Set<MealOrder> orders){
+        this.mealOrders = orders;
     }
 
     //GETTERS
@@ -47,7 +47,7 @@ public class Customer extends Account{
     }
 
     @OneToMany(cascade = { CascadeType.ALL })
-    public Set<Order> getOrders(){
-        return orders;
+    public Set<MealOrder> getOrders(){
+        return mealOrders;
     }
 }

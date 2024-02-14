@@ -20,7 +20,7 @@ public class SmartEats {
     private Set<Admin> admins;
     private Set<Meal> meals;
     private Set<MealItem> mealItems;
-    private Set<Order> orders;
+    private Set<MealOrder> orders;
      
 
     @Id
@@ -47,7 +47,7 @@ public class SmartEats {
 
     
     @OneToMany(cascade = { CascadeType.ALL })
-    public Set<Order> getOrders(){
+    public Set<MealOrder> getOrders(){
         return orders;
     }
 
@@ -73,7 +73,7 @@ public class SmartEats {
         this.meals = meals;
     }
 
-    public void setOrders(Set<Order> orders){
+    public void setOrders(Set<MealOrder> orders){
         this.orders = orders;
     }
 
