@@ -1,59 +1,49 @@
-public class Customer extends User{
+package ecse428.backend.model;
 
-    private Double weight;
-    private Double weightGoal;
-    private List<String> dietaryRestrictions; //might want to make this a dict or something so we can have tags and data
+import ecse428.backend.model.SmartEats.DietaryRestriction;
 
-    public Customer(String name, String phoneNumber, String emailAddress, String username, String password) {
-        this.name = name;
-        this.phoneNumber = phoneNumber;
-        this.emailAddress = emailAddress;
-        this.username = username;
-        this.password = password;
+import java.util.Set;
+
+import jakarta.persistence.Entity;
+
+@Entity
+public class Customer extends Account{
+
+    private String billingAddress;
+    private Integer points;
+    private Set<DietaryRestriction> dietaryRestrictions;
+    private String pfpImageLink;
+
+    public String getBillingAddress() {
+        return this.billingAddress;
     }
 
-    //overload for case when weight and restrictions aren't known at time of object creation
-    //those fields will more than likely be set with setter at some other time
-    public Customer(String name, String phoneNumber, String emailAddress, String username, String password, Double weight, Double weightGoal, List<String> dietaryRestrictions) {
-        this.name = name;
-        this.phoneNumber = phoneNumber;
-        this.emailAddress = emailAddress;
-        this.username = username;
-        this.password = password;
-        this.weight = weight;
-        this.weightGoal = weightGoal;
-        this.dietaryRestriction = dietaryRestriction;
+    public void setBillingAddress(String billingAddress) {
+        this.billingAddress = billingAddress;
     }
 
-    //SETTERS
-
-    public void setWeight(Double weight) {
-        this.weight = weight;
+    public Integer getPoints() {
+        return this.points;
     }
 
-    public void setWeightGoal(Double weightGoal) {
-        this.weightGoal = weightGoal;
+    public void setPoints(Integer points) {
+        this.points = points;
     }
 
-    public void setDietaryRestriction(List<String> dietaryRestrictions) {
+    public Set<DietaryRestriction> getDietaryRestrictions() {
+        return this.dietaryRestrictions;
+    }
+
+    public void setDietaryRestrictions(Set<DietaryRestriction> dietaryRestrictions) {
         this.dietaryRestrictions = dietaryRestrictions;
     }
 
-    // public void addDietaryRestriction(String dietaryRestriction) {
-    //     this.dietaryRestrictions.add(dietaryRestriction);
-    // }
-
-    //GETTERS
-
-    public Double getWeight() {
-        return this.weight;
+    public String getPfpImageLink() {
+        return this.pfpImageLink;
     }
 
-    public Double getWeightGoal() {
-        return this.weightGoal;
+    public void setPfpImageLink(String pfpImageLink) {
+        this.pfpImageLink = pfpImageLink;
     }
-
-    public List<String> getDietaryRestrictions() {
-        return this.dietaryRestrictions;
-    }
+    
 }
