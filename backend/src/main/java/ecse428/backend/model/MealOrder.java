@@ -10,7 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
 @Entity
-public class Order {
+public class MealOrder {
     
     private long orderID;
     private double total;
