@@ -2,59 +2,66 @@ package ecse428.backend.model;
 
 import java.util.Set;
 
-import ecse428.backend.model.SmartEats.DieteryRestriction;
-import jakarta.persistence.CascadeType;
+import ecse428.backend.model.SmartEats.Ingredient;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 
 @Entity
 public class Meal {
     
-
     private String mealName;
     private String description;
-    private double rating;
-    private double price;
-    private Set<DieteryRestriction> dietaryRestrictions; 
-    private Set<MealItem> mealItems;
+    private Double rating;
+    private Double price;
+    private Set<Ingredient> ingredients;
+    private String imageLink;
 
     @Id
-    public String getMealName(){
-        return mealName;
+    public String getMealName() {
+        return this.mealName;
     }
-    public String getDescription(){
-        return description;
-    }
-    public double getRating(){
-        return rating;
-    }
-    public double getPrice(){
-        return price;
-    } 
-    public Set<DieteryRestriction> getDietaryRestrictions() {
-        return this.dietaryRestrictions;
-    }
-    @OneToMany(cascade = { CascadeType.ALL })
-    public Set<MealItem> getMealItems(){
-        return mealItems;
-    }
-    public void setMealName(String mealName){
+
+    public void setMealName(String mealName) {
         this.mealName = mealName;
     }
-    public void setDescription(String desc){
-        this.description = desc;
+
+    public String getDescription() {
+        return this.description;
     }
-    public void setRating(double rating){
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Double getRating() {
+        return this.rating;
+    }
+
+    public void setRating(Double rating) {
         this.rating = rating;
     }
-    public void setPrice(double price){
+
+    public Double getPrice() {
+        return this.price;
+    }
+
+    public void setPrice(Double price) {
         this.price = price;
     }
-    public void setDietaryRestrictions(Set<DieteryRestriction> dietaryRestrictions) {
-        this.dietaryRestrictions = dietaryRestrictions;
+
+    public Set<Ingredient> getIngredients() {
+        return this.ingredients;
     }
-    public void setMealItems(Set<MealItem> mealItems){
-        this.mealItems = mealItems;
-    }   
+
+    public void setIngredients(Set<Ingredient> ingredients) {
+        this.ingredients = ingredients;
+    }
+ 
+    public String getImageLink() {
+        return this.imageLink;
+    }
+
+    public void setImageLink(String imageLink) {
+        this.imageLink = imageLink;
+    }
 }
