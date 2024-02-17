@@ -5,7 +5,7 @@ import ecse428.backend.model.SmartEats.DietaryRestriction;
 
 import java.util.Set;
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 
 @Entity
 public class Customer extends Account{
@@ -22,9 +22,9 @@ public class Customer extends Account{
         this.setEmail(email);
     }
 
-    public Customer(String email, String name, Set<DietaryRestriction> dietaryRestrictions) {
+    public Customer(String email, String password, Set<DietaryRestriction> dietaryRestrictions) {
         this.setEmail(email);
-        this.setName(name);
+        this.setPassword(password);
         this.setDietaryRestrictions(dietaryRestrictions);
     }
 
