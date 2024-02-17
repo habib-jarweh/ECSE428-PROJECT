@@ -1,5 +1,6 @@
 package ecse428.backend.model;
 
+import ecse428.backend.dto.CustomerDto;
 import ecse428.backend.model.SmartEats.DietaryRestriction;
 
 import java.util.Set;
@@ -13,6 +14,19 @@ public class Customer extends Account{
     private Integer points;
     private Set<DietaryRestriction> dietaryRestrictions;
     private String pfpImageLink;
+
+    // Default constructor for JPA
+    protected Customer() {}
+
+    public Customer(String email) {
+        this.setEmail(email);
+    }
+
+    public Customer(String email, String name, Set<DietaryRestriction> dietaryRestrictions) {
+        this.setEmail(email);
+        this.setName(name);
+        this.setDietaryRestrictions(dietaryRestrictions);
+    }
 
     public String getBillingAddress() {
         return this.billingAddress;
@@ -44,6 +58,10 @@ public class Customer extends Account{
 
     public void setPfpImageLink(String pfpImageLink) {
         this.pfpImageLink = pfpImageLink;
+    }
+
+    public CustomerDto convertToDto() {
+        return new CustomerDto(this.getEmail(), this.getName(), this.getDietaryRestrictions());
     }
     
 }

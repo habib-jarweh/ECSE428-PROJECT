@@ -12,7 +12,7 @@ public class SmartEats {
     
    
     public enum DietaryRestriction {
-        Peanut, Dairy, Gluten 
+        Peanut, Dairy, Gluten, Vegan, Halal
     }
 
     public enum Ingredient {

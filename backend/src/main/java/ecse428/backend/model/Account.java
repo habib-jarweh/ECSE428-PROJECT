@@ -16,7 +16,6 @@ public abstract class Account {
     private String address;
     private String phoneNumber;
 
-    @Id
     public String getUsername() {
         return this.username;
     }
@@ -41,6 +40,7 @@ public abstract class Account {
         this.name = name;
     }
 
+    @Id
     public String getEmail() {
         return this.email;
     }
