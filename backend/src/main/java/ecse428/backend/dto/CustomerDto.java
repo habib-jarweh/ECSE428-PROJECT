@@ -66,7 +66,7 @@ public class CustomerDto {
     }
 
     public Customer convertToEntity() {
-        return new Customer(this.getEmail(), this.getName(), this.getDietaryRestrictions());
+        return new Customer(this.getEmail(), this.getPassword(), this.getDietaryRestrictions());
     }
 
 }
