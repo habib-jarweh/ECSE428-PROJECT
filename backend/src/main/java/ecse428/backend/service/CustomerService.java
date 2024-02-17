@@ -23,18 +23,23 @@ public class CustomerService {
             Customer customer = customerDto.convertToEntity();
 
             try {
+                Customer ex_customer = customerRepository.findCustomerByEmail(customerDto.getEmail());
+                if (ex_customer != null) {
+                    throw new IllegalArgumentException("A user with this email already exists.");
+                }
+
                 customerRepository.save(customer);
             } catch (DataIntegrityViolationException ex) {
                 throw new IllegalArgumentException("A user with this email already exists.", ex);
             }
             return new CustomerDto(customer.getEmail(), null);
         }else{
-            throw new IllegalArgumentException("Password must be at least 8 characters long, contain at least one digit, one uppercase letter, one lowercase letter, and one special character.");
+            throw new IllegalArgumentException("Password must be at least 8 characters long.");
         }
     }
 
     public boolean checkCustomerCredentials(CustomerDto customerDto) {
-        Customer customer = customerRepository.findByEmail(customerDto.getEmail());
+        Customer customer = customerRepository.findCustomerByEmail(customerDto.getEmail());
         if (customer == null) {
             throw new IllegalArgumentException("Invalid email or password.");
         }
@@ -47,7 +52,7 @@ public class CustomerService {
     }
 
     public CustomerDto getCustomerByEmail(String email) {
-        Customer customer = customerRepository.findByEmail(email);
+        Customer customer = customerRepository.findCustomerByEmail(email);
         if (customerRepository == null) {
             throw new IllegalArgumentException("Could not find customer with email address " + email + ".");
         }

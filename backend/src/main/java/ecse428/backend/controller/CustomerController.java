@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.stream.Collectors;
 
@@ -40,7 +37,7 @@ public class CustomerController {
         }
     }
 
-    @PostMapping("/login")
+    @GetMapping("/login")
     public ResponseEntity<?> checkUserCredentials(@Valid @RequestBody CustomerDto customerDto, BindingResult result) {
         if (result.hasErrors()) {
             String errors = result.getAllErrors().stream()
