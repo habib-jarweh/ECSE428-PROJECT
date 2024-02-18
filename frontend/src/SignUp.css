@@ -1,0 +1,52 @@
+/* signup.css */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #282c34;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    text-align: center;
+}
+
+.logo {
+    height: 100px;
+}
+
+.form {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form label, .form input {
+    display: block;
+    margin-bottom: 10px;
+    color: white;
+}
+
+.form input {
+    color: black; /* Change text color to black */
+}
+
+.form button {
+    background-color: #61dafb;
+    color: #282c34;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.signup-link {
+    color: white;
+    text-decoration: none;
+    margin-top: 10px;
+    display: block;
+}
