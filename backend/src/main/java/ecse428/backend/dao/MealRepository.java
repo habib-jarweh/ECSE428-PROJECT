@@ -1,6 +1,6 @@
 package ecse428.backend.dao;
 
 import ecse428.backend.model.Meal;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface MealRepository extends CrudRepository<Meal, String> {}
+public interface MealRepository extends JpaRepository<Meal, String> {}
