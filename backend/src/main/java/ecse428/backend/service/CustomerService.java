@@ -53,13 +53,13 @@ public class CustomerService {
 
     public CustomerDto getCustomerByEmail(String email) {
         Customer customer = customerRepository.findCustomerByEmail(email);
-        if (customerRepository == null) {
+        if (customer == null) {
             throw new IllegalArgumentException("Could not find customer with email address " + email + ".");
         }
         return customer.convertToDto();
     }
 
-    private boolean validatePassword(String password){
+    protected boolean validatePassword(String password){
         if(password == null || password.isEmpty()){
             throw new IllegalArgumentException("Password cannot be empty.");
         }
