@@ -2,8 +2,6 @@ package ecse428.backend.model;
 
 import java.util.Set;
 
-import org.hibernate.engine.internal.Cascade;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
