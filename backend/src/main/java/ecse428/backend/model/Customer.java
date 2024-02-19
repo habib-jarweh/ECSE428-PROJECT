@@ -25,7 +25,10 @@ public class Customer extends Account{
     public Customer(String email, String password, Set<DietaryRestriction> dietaryRestrictions) {
         this.setEmail(email);
         this.setPassword(password);
-        this.setDietaryRestrictions(dietaryRestrictions);
+        
+        for (DietaryRestriction restriction : dietaryRestrictions) {
+            this.setDietaryRestrictions(restriction);
+        }        
     }
 
     public String getBillingAddress() {
@@ -48,8 +51,8 @@ public class Customer extends Account{
         return this.dietaryRestrictions;
     }
 
-    public void setDietaryRestrictions(Set<DietaryRestriction> dietaryRestrictions) {
-        this.dietaryRestrictions = dietaryRestrictions;
+    public void setDietaryRestrictions(DietaryRestriction dietaryRestrictions) {
+        this.dietaryRestrictions.add(dietaryRestrictions);
     }
 
     public String getPfpImageLink() {
@@ -63,5 +66,6 @@ public class Customer extends Account{
     public CustomerDto convertToDto() {
         return new CustomerDto(this.getEmail(), this.getName(), this.getDietaryRestrictions());
     }
+
     
 }
