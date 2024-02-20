@@ -35,6 +35,5 @@ public class StepDefinition extends BaseTest {
         
     @Given("^the backend is running$")
     public void theAPIServerIsRunning() {
-        // waitUntilOnline();
     }
 }
