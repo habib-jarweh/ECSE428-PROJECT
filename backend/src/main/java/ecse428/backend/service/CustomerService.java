@@ -71,13 +71,9 @@ public class CustomerService {
 
         if (validateDietaryRestriction(dietaryRestrictions)) {
 
-            for (DietaryRestriction restriction : dietaryRestrictions) {
-                customer.setDietaryRestrictions(restriction);
-            } 
-
+            customer.setDietaryRestrictions(dietaryRestrictions);
             customerRepository.save(customer);
-        } else {
-            throw new IllegalArgumentException("Invalid dietary restriction.");
+
         }
     }
 
@@ -88,25 +84,32 @@ public class CustomerService {
         }
 
         if (validateDietaryRestriction(dietaryRestrictions)) {
+
+            //Check for duplicate dietary restrictions
+            Set<DietaryRestriction> existingRestrictions = customer.getDietaryRestrictions();
             for (DietaryRestriction restriction : dietaryRestrictions) {
-                if (!customer.getDietaryRestrictions().contains(restriction)) {
-                    customer.setDietaryRestrictions(restriction);
-                } else {
-                    throw new IllegalArgumentException("Dietary restriction " + restriction + " already exists for the customer.");
+                if (existingRestrictions.contains(restriction)) {
+                    throw new IllegalArgumentException("Duplicate dietary restriction detected: " + restriction.toString());
                 }
             }
-
+            customer.setDietaryRestrictions(dietaryRestrictions);
             customerRepository.save(customer);
-        } else {
-            throw new IllegalArgumentException("Invalid dietary restriction.");
+
         }
     }
 
-    protected boolean validateDietaryRestriction(Set<DietaryRestriction> dietaryRestrictions) {
 
-        for (DietaryRestriction restriction : DietaryRestriction.values()) {
-            if (! dietaryRestrictions.contains(restriction)) {
-                return false;
+
+
+
+    protected boolean validateDietaryRestriction(Set<DietaryRestriction> dietaryRestrictions) {
+        
+        if (dietaryRestrictions == null) {
+            throw new IllegalArgumentException("Dietary restrictions cannot be null.");
+        }
+        for (DietaryRestriction restriction : dietaryRestrictions) {
+            if (!DietaryRestriction.isValid(restriction)) {
+                throw new IllegalArgumentException(restriction.toString() + " is not a valid dietary restriction.");
             }
         }
         return true;

@@ -1,5 +1,7 @@
 package ecse428.backend.model;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
@@ -12,7 +14,15 @@ public class SmartEats {
     
    
     public enum DietaryRestriction {
-        Peanut, Dairy, Gluten, Vegan, Halal
+        Peanut, Dairy, Gluten, Vegan, Halal;
+        
+        public static boolean isValid(DietaryRestriction restriction) {
+            List<DietaryRestriction> supportedRestrictions = Arrays.asList(Peanut, Dairy, Gluten, Vegan, Halal);
+            return supportedRestrictions.contains(restriction);
+        }
+
+
+
     }
 
     public enum Ingredient {
