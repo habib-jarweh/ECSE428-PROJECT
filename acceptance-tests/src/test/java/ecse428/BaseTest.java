@@ -1,11 +1,20 @@
 package ecse428;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.security.SecureRandom;
+import java.util.List;
 import java.util.Random;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.HttpClients;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.List;
 
 
 public class BaseTest {
@@ -24,85 +33,49 @@ public class BaseTest {
     // @BeforeClass
     // public static void setupForAllTests() {
     //     Unirest.config().defaultBaseUrl(BASE_URL);
-    //     startServer();
-    // }
+    //     String projectPath = "/Users/habibjarweh/ECSE428-PROJECT/backend/";
+    //     runGradleBootRunInBackground(projectPath);    }
 
     // @AfterClass
     // public static void tearDownAllTests() {
     //     stopServer();
     // }
 
-    // public static void startServer() {
-    //     boolean success = false;
-    //     final ExecutorService service = Executors.newSingleThreadExecutor();
-    //     try {
-    //         final Future<Boolean> f = service.submit(new Callable<Boolean>() {
-    //             @Override
-    //             public Boolean call() {
-    //                 startServerUntimed();
-    //                 return true;
-    //             }
-    //         });
-    //         success = f.get(TIME_OUT, TimeUnit.MILLISECONDS);
-    //     } catch (Exception ignored) { } finally {
-    //         if (!success) {
-    //             if (serverProcess != null) {
-    //                 serverProcess.destroy();
-    //             }
-    //             System.out.println("Failed to start server -- exiting program");
-    //             System.exit(-1);
-    //         }
-    //     }
-    // }
+    public static void runGradleBootRunInBackground(String projectPath) {
+        try {
+            // Assuming gradlew is located in the project directory
+            String gradlewPath = projectPath + "gradlew";
+            List<String> commands = List.of(gradlewPath, "bootRun");
 
-    // public static void startServerUntimed() {
-    //     try {
-    //         ProcessBuilder pb = new ProcessBuilder("../backend/gradlew", "bootRun");
-    //         if (serverProcess != null) {
-    //             serverProcess.destroy();
-    //         }
-    //         serverProcess = pb.start();
-    //         final InputStream is = serverProcess.getInputStream();
-    //         final BufferedReader output = new BufferedReader(new InputStreamReader(is));
-    //         while (true) {
-    //             String line = output.readLine();
-    //             if (line != null && line.contains("Running on 8080")) {
-    //                 waitUntilOnline();
-    //                 return;
-    //             }
-    //         }
-    //     } catch (Exception e) {
-    //         e.printStackTrace();
-    //     }
-    // }
+            // Create a ProcessBuilder instance with the command
+            ProcessBuilder processBuilder = new ProcessBuilder(commands);
 
-    // public static void waitUntilOnline() {
-    //     int tries = 0;
-    //     while (!isOnline()) {
-    //         System.out.println("WAITING HERE");
-    //         try {
-    //             Thread.sleep(10);
-    //         } catch (InterruptedException ignored) {}
-    //         tries++;
-    //         if (tries > 100) {
-    //             startServer();
-    //             tries = 0;
-    //         }
-    //     }
-    // }
+            // Set the working directory to the project directory
+            processBuilder.directory(new java.io.File(projectPath));
 
-    // public static boolean isOnline() {
-    //     try {
-    //         int status = Unirest.get("/").asString().getStatus();
-    //         System.out.println(status);
-    //         return status == 404;
-    //     } catch (UnirestException ignored) { }
-    //     return false;
-    // }
+            // Print the exact command being run
+            System.out.println("Executing command: " + String.join(" ", commands) + " in directory: " + projectPath);
 
-    // public static void stopServer() {
-    //     serverProcess.destroy();
-    // }
+            // Redirect error stream to standard output stream
+            processBuilder.redirectErrorStream(true);
+
+            // Start the process
+            Process process = processBuilder.start();
+
+            // Optionally, read the process's output
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    System.out.println(line);
+                }
+            }
+
+            System.out.println("Gradle bootRun command executed in background.");
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("An error occurred while trying to execute the gradle bootRun command.");
+        }
+    }
 
         public static String randomAlphaNumeric(int count) {
         StringBuilder builder = new StringBuilder();
