@@ -1,4 +1,6 @@
+##################################################################################
 ### PLEASE MAKE SURE TO HAVE BACKEND UP AND RUNNING BEFORE RUNNING STEP DEFINITIONS
+##################################################################################
 
 ### TO RUN TESTS
     mvn test
