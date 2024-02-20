@@ -165,92 +165,68 @@ public class CustomerServiceTest {
 
     @Test
     public void testSetDietaryRestriction_Success() {
-        // Mocking behavior
-        Customer customer = new Customer("test@example.com");
-        when(customerRepository.findCustomerByEmail("test@example.com")).thenReturn(customer);
+        // Given
+        String email = "test@example.com";
+        Customer customer = new Customer(email);
+        when(customerRepository.findCustomerByEmail(email)).thenReturn(customer);
+        String[] dietaryRestrictions = {"DAIRY", "GLUTEN"};
 
-        // Create a set of dietary restrictions
-        Set<DietaryRestriction> dietaryRestrictions = EnumSet.of(DietaryRestriction.Dairy, DietaryRestriction.Gluten);
+        // When
+        customerService.setDietaryRestriction(email, dietaryRestrictions);
 
-        // Call the method under test
-        assertDoesNotThrow(() -> customerService.setDietaryRestriction("test@example.com", dietaryRestrictions));
-
-        // Verify the result
-        assertEquals(dietaryRestrictions, customer.getDietaryRestrictions());
+        // Then
         verify(customerRepository, times(1)).save(customer);
     }
 
     @Test
     public void testSetDietaryRestriction_CustomerNotFound() {
-        // Mocking behavior
-        when(customerRepository.findCustomerByEmail("nonexistent@example.com")).thenReturn(null);
+        // Given
+        String email = "nonexistent@example.com";
+        when(customerRepository.findCustomerByEmail(email)).thenReturn(null);
+        String[] dietaryRestrictions = {"GLUTEN", "DAIRY"};
 
-        // Create a set of dietary restrictions
-        Set<DietaryRestriction> dietaryRestrictions = EnumSet.of(DietaryRestriction.Gluten, DietaryRestriction.Dairy);
-
-        // Call the method under test and expect an exception
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> customerService.setDietaryRestriction("nonexistent@example.com", dietaryRestrictions));
-        assertEquals("Could not find customer with email address nonexistent@example.com.", exception.getMessage());
-
-        // Verify interactions with dependencies
-        verify(customerRepository, never()).save(any(Customer.class));
+        // When & Then
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> customerService.setDietaryRestriction(email, dietaryRestrictions));
+        assertEquals("Could not find customer with email address " + email + ".", exception.getMessage());
     }
 
     @Test
-    public void testupdateDietaryRestriction_DuplicateRestriction() {
-        // Mocking behavior
-        Customer customer = new Customer("test@example.com");
-        customer.setDietaryRestrictions(EnumSet.of(DietaryRestriction.Halal));
-        when(customerRepository.findCustomerByEmail("test@example.com")).thenReturn(customer);
+    public void testSetDietaryRestriction_DuplicateRestrictions() {
+        // Given
+        String email = "duplicate@example.com";
+        Customer customer = new Customer(email);
+        when(customerRepository.findCustomerByEmail(email)).thenReturn(customer);
+        String[] dietaryRestrictions = {"GLUTEN", "GLUTEN"};
 
-        // Create a set of dietary restrictions with a duplicate restriction
-        Set<DietaryRestriction> dietaryRestrictions = EnumSet.of(DietaryRestriction.Halal, DietaryRestriction.Vegan);
-
-        // Call the method under test and expect an exception
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> customerService.updateDietaryRestriction("test@example.com", dietaryRestrictions));
-        assertEquals("Duplicate dietary restriction detected: Halal", exception.getMessage());
-
-        // Verify interactions with dependencies
-        verify(customerRepository, never()).save(any(Customer.class));
+        // When & Then
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> customerService.setDietaryRestriction(email, dietaryRestrictions));
+        assertEquals("Duplicate dietary restriction detected: GLUTEN", exception.getMessage());
     }
 
     @Test
-    public void testUpdateDietaryRestriction_ValidNonDuplicate() {
-        // Mocking behavior
-        Customer customer = new Customer("valid@example.com");
-        customer.setDietaryRestrictions(EnumSet.of(DietaryRestriction.Dairy));
-        when(customerRepository.findCustomerByEmail("valid@example.com")).thenReturn(customer);
+    public void testSetDietaryRestriction_InvalidRestriction() {
+        // Given
+        String email = "invalid@example.com";
+        Customer customer = new Customer(email);
+        when(customerRepository.findCustomerByEmail(email)).thenReturn(customer);
+        String[] dietaryRestrictions = {"DAIRY", "INVALID"};
 
-        // Create a set of non-duplicate dietary restrictions
-        Set<DietaryRestriction> dietaryRestrictions = EnumSet.of(DietaryRestriction.Gluten, DietaryRestriction.Vegan);
-
-        // Call the method under test
-        customerService.updateDietaryRestriction("valid@example.com", dietaryRestrictions);
-
-        // Verify the dietary restrictions were updated
-        assertEquals(dietaryRestrictions, customer.getDietaryRestrictions());
-
-        // Verify interactions with dependencies
-        verify(customerRepository).save(customer);
+        // When & Then
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> customerService.setDietaryRestriction(email, dietaryRestrictions));
+        assertEquals("INVALID is not a valid dietary restriction.", exception.getMessage());
     }
 
     @Test
-    public void testValidateDietaryRestriction_NullSet() {
-        // Expect an exception due to null dietary restrictions set
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> customerService.validateDietaryRestriction(null));
-        assertEquals("Dietary restrictions cannot be null.", exception.getMessage());
+    public void testSetDietaryRestriction_NullRestrictions() {
+        // Given
+        String email = "null@example.com";
+        Customer customer = new Customer(email);
+        when(customerRepository.findCustomerByEmail(email)).thenReturn(customer);
+
+        // When & Then
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> customerService.setDietaryRestriction(email, null));
+        assertEquals("Dietary restriction cannot be null.", exception.getMessage());
     }
 
-    @Test
-    public void testValidateDietaryRestriction_AllValid() {
-        // Assuming all specified restrictions are valid
-        Set<DietaryRestriction> dietaryRestrictions = EnumSet.of(DietaryRestriction.Vegan, DietaryRestriction.Gluten);
-
-        // Call the method under test
-        boolean result = customerService.validateDietaryRestriction(dietaryRestrictions);
-
-        // Verify the result is true for all valid restrictions
-        assertTrue(result);
-    }
 
 }

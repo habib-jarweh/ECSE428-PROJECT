@@ -12,17 +12,8 @@ import jakarta.persistence.OneToMany;
 
 public class SmartEats {
     
-   
     public enum DietaryRestriction {
-        Peanut, Dairy, Gluten, Vegan, Halal;
-        
-        public static boolean isValid(DietaryRestriction restriction) {
-            List<DietaryRestriction> supportedRestrictions = Arrays.asList(Peanut, Dairy, Gluten, Vegan, Halal);
-            return supportedRestrictions.contains(restriction);
-        }
-
-
-
+        PEANUT, DAIRY, GLUTEN, VEGAN, HALAL
     }
 
     public enum Ingredient {

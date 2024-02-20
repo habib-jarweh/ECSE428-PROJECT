@@ -51,4 +51,20 @@ public class CustomerController {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
     }
+
+    @PostMapping("/dietary-restrictions")
+    public ResponseEntity<?> updateDietaryRestrictions(@Valid @RequestBody CustomerDto customerDto, BindingResult result, @RequestParam("restrictions") String[] dietaryRestrictions) {
+        if (result.hasErrors()) {
+            String errors = result.getAllErrors().stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .collect(Collectors.joining(", "));
+            return ResponseEntity.badRequest().body(errors);
+        }
+        try {
+            String email = customerDto.getEmail();
+            return ResponseEntity.ok(customerService.setDietaryRestriction(email, dietaryRestrictions));
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
 }

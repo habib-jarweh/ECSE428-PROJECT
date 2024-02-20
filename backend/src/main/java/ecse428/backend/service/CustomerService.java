@@ -5,6 +5,7 @@ import ecse428.backend.dto.CustomerDto;
 import ecse428.backend.model.Customer;
 import ecse428.backend.model.SmartEats.DietaryRestriction;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,56 +64,44 @@ public class CustomerService {
         return customer.convertToDto();
     }
 
-    public void setDietaryRestriction(String email, Set<DietaryRestriction> dietaryRestrictions) {
+    public boolean setDietaryRestriction(String email, String[] dietaryRestrictions) {
         Customer customer = customerRepository.findCustomerByEmail(email);
         if (customer == null) {
             throw new IllegalArgumentException("Could not find customer with email address " + email + ".");
         }
 
-        if (validateDietaryRestriction(dietaryRestrictions)) {
+        Set<DietaryRestriction> newRestrictions = convertDietaryRestriction(dietaryRestrictions);
 
-            customer.setDietaryRestrictions(dietaryRestrictions);
-            customerRepository.save(customer);
+        customer.setDietaryRestrictions(newRestrictions);
+        customerRepository.save(customer);
 
-        }
-    }
-
-    public void updateDietaryRestriction(String email, Set<DietaryRestriction> dietaryRestrictions) {
-        Customer customer = customerRepository.findCustomerByEmail(email);
-        if (customer == null) {
-            throw new IllegalArgumentException("Could not find customer with email address " + email + ".");
-        }
-
-        if (validateDietaryRestriction(dietaryRestrictions)) {
-
-            //Check for duplicate dietary restrictions
-            Set<DietaryRestriction> existingRestrictions = customer.getDietaryRestrictions();
-            for (DietaryRestriction restriction : dietaryRestrictions) {
-                if (existingRestrictions.contains(restriction)) {
-                    throw new IllegalArgumentException("Duplicate dietary restriction detected: " + restriction.toString());
-                }
-            }
-            customer.setDietaryRestrictions(dietaryRestrictions);
-            customerRepository.save(customer);
-
-        }
-    }
-
-
-
-
-
-    protected boolean validateDietaryRestriction(Set<DietaryRestriction> dietaryRestrictions) {
-        
-        if (dietaryRestrictions == null) {
-            throw new IllegalArgumentException("Dietary restrictions cannot be null.");
-        }
-        for (DietaryRestriction restriction : dietaryRestrictions) {
-            if (!DietaryRestriction.isValid(restriction)) {
-                throw new IllegalArgumentException(restriction.toString() + " is not a valid dietary restriction.");
-            }
-        }
         return true;
+
+    }
+
+    protected Set<DietaryRestriction> convertDietaryRestriction(String[] dietaryRestriction) {
+        if (dietaryRestriction == null) {
+            throw new IllegalArgumentException("Dietary restriction cannot be null.");
+        }
+        
+        Set<String> uniqueRestrictions = new HashSet<>();
+        Set<DietaryRestriction> set = new HashSet<>();
+        
+        for (String restriction : dietaryRestriction) {
+            String upperCaseRestriction = restriction.toUpperCase();
+            
+            // Check for duplicates
+            if (!uniqueRestrictions.add(upperCaseRestriction)) {
+                throw new IllegalArgumentException("Duplicate dietary restriction detected: " + restriction);
+            }
+            
+            try {
+                set.add(DietaryRestriction.valueOf(upperCaseRestriction));
+            } catch (IllegalArgumentException e) {
+                throw new IllegalArgumentException(restriction + " is not a valid dietary restriction.");
+            }
+        }
+        return set;
     }
 
     protected boolean validatePassword(String password){
