@@ -18,7 +18,7 @@ public class CustomerDto {
     private String password;
 
     private Set<SmartEats.DietaryRestriction> dietaryRestrictions;
-    private double weightGoal;
+    private Double weightGoal;
 
     public CustomerDto() {}
 
@@ -27,7 +27,7 @@ public class CustomerDto {
         this.password = password;
     }
 
-    public CustomerDto(String email, String name, Set<SmartEats.DietaryRestriction> dietaryRestrictions, double weightGoal) {
+    public CustomerDto(String email, String name, Set<SmartEats.DietaryRestriction> dietaryRestrictions, Double weightGoal) {
         this.email = email;
         this.password = null;
         this.name = name;
