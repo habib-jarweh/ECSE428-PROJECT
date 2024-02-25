@@ -228,5 +228,38 @@ public class CustomerServiceTest {
         assertEquals("Dietary restriction cannot be null.", exception.getMessage());
     }
 
+    @Test
+    public void testGetDietaryRestriction_Success() {
+        // Mocking behavior
+        String email = "test@example.com";
+        Customer customer = new Customer(email);
+        Set<DietaryRestriction> dietaryRestrictions = EnumSet.of(DietaryRestriction.DAIRY, DietaryRestriction.GLUTEN);
+        customer.setDietaryRestrictions(dietaryRestrictions);
+        when(customerRepository.findCustomerByEmail(email)).thenReturn(customer);
+
+        // Call the method under test
+        String[] result = customerService.getDietaryRestriction(email);
+
+        // Verify the result
+        assertNotNull(result);
+        assertEquals(2, result.length);
+        assertEquals("DAIRY", result[0]);
+        assertEquals("GLUTEN", result[1]);
+    }
+
+    @Test
+    public void testGetDietaryRestriction_CustomerNotFound() {
+        // Mocking behavior
+        String email = "nonexistent@example.com";
+        when(customerRepository.findCustomerByEmail(email)).thenReturn(null);
+
+        // Call the method under test and expect an exception
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> customerService.getDietaryRestriction(email));
+        assertEquals("Could not find customer with email address " + email + ".", exception.getMessage());
+    }
+
+
+
+
 
 }

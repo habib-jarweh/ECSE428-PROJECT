@@ -79,6 +79,28 @@ public class CustomerService {
 
     }
 
+    public String[] getDietaryRestriction(String email) {
+        Customer customer = customerRepository.findCustomerByEmail(email);
+        if (customer == null) {
+            throw new IllegalArgumentException("Could not find customer with email address " + email + ".");
+        }
+
+        Set<DietaryRestriction> newRestrictions = customer.getDietaryRestrictions();
+
+        String[] restrictions = new String[newRestrictions.size()];
+        int i = 0;
+        for (DietaryRestriction restriction : newRestrictions) {
+            restrictions[i] = restriction.toString();
+            i++;
+        }
+
+        return restrictions;
+
+    }
+
+
+
+
     protected Set<DietaryRestriction> convertDietaryRestriction(String[] dietaryRestriction) {
         if (dietaryRestriction == null) {
             throw new IllegalArgumentException("Dietary restriction cannot be null.");
