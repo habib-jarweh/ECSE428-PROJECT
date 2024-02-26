@@ -204,6 +204,8 @@ public class CustomerServiceTest {
 
         Set<SmartEats.Pair<LocalDate, Double>> weightHistory = new HashSet<SmartEats.Pair<LocalDate, Double>>();
 
+        customer.setWeightHistory(weightHistory);
+
         when(customerRepository.findCustomerByEmail("test@example.com")).thenReturn(customer);
 
         CustomerDto customerDto = new CustomerDto("test@example.com", "whatever");
