@@ -106,29 +106,25 @@ public class CustomerControllerTest {
     void updateUserWeightHistory_ValidUser_ReturnsOk() throws Exception {
                 // Arrange
                 CustomerDto customerDto = new CustomerDto("test@example.com", "password");
-                when(customerService.addUpdateWeightHistory(customerDto, 101.1)).thenReturn(customerDto);
-        
+
                 // Act & Assert
                 mockMvc.perform(get("/customers/weightHistory")
                                 .content(objectMapper.writeValueAsString(customerDto))
+                                .param("weight", "101.1")
                                 .contentType(MediaType.APPLICATION_JSON))
                         .andExpect(status().isOk());
         
-                verify(customerService, times(1)).checkCustomerCredentials(any(CustomerDto.class));
+                verify(customerService, times(1)).addUpdateWeightHistory(any(CustomerDto.class), any(Double.class));
     }
 
     @Test
     void updateUserWeightHistory_InvalidUser_ReturnsBadRequest() throws Exception {
-                // Arrange
-                CustomerDto customerDto = new CustomerDto("test@example.com", "password");
-                when(customerService.addUpdateWeightHistory(customerDto, 101.1)).thenThrow(IllegalArgumentException.class);
-                
+
                 // Act & Assert
                 mockMvc.perform(get("/customers/weightHistory")
-                                .content(objectMapper.writeValueAsString(customerDto))
                                 .contentType(MediaType.APPLICATION_JSON))
                         .andExpect(status().isBadRequest());
         
-                verify(customerService, times(1)).checkCustomerCredentials(any(CustomerDto.class));
+                verify(customerService, times(0)).checkCustomerCredentials(any(CustomerDto.class));
     }
 }
