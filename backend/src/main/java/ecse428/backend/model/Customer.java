@@ -15,7 +15,13 @@ public class Customer extends Account{
     private String billingAddress;
     private Integer points;
     private Set<DietaryRestriction> dietaryRestrictions;
+
     private Set<Pair<LocalDate, Double>> weightHistory;
+
+    private String pfpImageLink;
+    private Double weightGoal;
+
+
 
     // Default constructor for JPA
     protected Customer() {}
@@ -24,11 +30,19 @@ public class Customer extends Account{
         this.setEmail(email);
     }
 
+
     public Customer(String email, String password, Set<DietaryRestriction> dietaryRestrictions, Set<Pair<LocalDate,Double>> weightHistory) {
         this.setEmail(email);
         this.setPassword(password);
         this.setDietaryRestrictions(dietaryRestrictions);
         this.setWeightHistory(weightHistory);
+
+    public Customer(String email, String password, Set<DietaryRestriction> dietaryRestrictions, Double weightGoal) {
+        this.setEmail(email);
+        this.setPassword(password);
+        this.setDietaryRestrictions(dietaryRestrictions);
+        this.setWeightGoal(weightGoal);
+
     }
 
     public String getBillingAddress() {
@@ -55,8 +69,22 @@ public class Customer extends Account{
         this.dietaryRestrictions = dietaryRestrictions;
     }
 
+
     public Set<Pair<LocalDate,Double>> getWeightHistory() {
         return this.weightHistory;
+
+    public Double getWeightGoal() {
+        return this.weightGoal;
+    }
+
+    public void setWeightGoal(Double weightGoal) {
+        this.weightGoal = weightGoal;
+    }
+
+
+    public String getPfpImageLink() {
+        return this.pfpImageLink;
+
     }
 
     public void setWeightHistory(Set<Pair<LocalDate,Double>> weightHistory) {
@@ -64,7 +92,11 @@ public class Customer extends Account{
     }
 
     public CustomerDto convertToDto() {
+
         return new CustomerDto(this.getEmail(), this.getName(), this.getDietaryRestrictions(),this.getWeightHistory());
+
+        return new CustomerDto(this.getEmail(), this.getName(), this.getDietaryRestrictions(), this.getWeightGoal());
+
     }
     
 }
