@@ -114,4 +114,27 @@ public class CustomerService {
     customerRepository.save(customer);
     return customer.convertToDto();
   }
+
+  public CustomerDto addUpdateWeightGoal(CustomerDto customerDto, Double weightGoal) {
+    
+    Customer customer = customerRepository.findCustomerByEmail(customerDto.getEmail());
+
+    if (customer == null) {
+        throw new IllegalArgumentException("Could not find customer with email address " + customerDto.getEmail() + ".");
+    }
+
+    if (weightGoal <= 0) {
+        throw new IllegalArgumentException("Weight goal must be greater than 0.");
+    }
+
+    // Update the customer's weight goal
+      customer.setWeightGoal(weightGoal);
+
+    // Save the updated customer
+    customerRepository.save(customer);
+
+    // Return the updated customer information, excluding sensitive details like password
+   return customer.convertToDto(); // Make sure the convertToDto method does not include the password
+  }
+
 }
