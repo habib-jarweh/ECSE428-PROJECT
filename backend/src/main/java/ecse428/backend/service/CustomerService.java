@@ -3,6 +3,11 @@ package ecse428.backend.service;
 import ecse428.backend.dao.CustomerRepository;
 import ecse428.backend.dto.CustomerDto;
 import ecse428.backend.model.Customer;
+import ecse428.backend.model.SmartEats.DietaryRestriction;
+
+import java.util.HashSet;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -59,6 +64,68 @@ public class CustomerService {
         return customer.convertToDto();
     }
 
+    public boolean setDietaryRestriction(String email, String[] dietaryRestrictions) {
+        Customer customer = customerRepository.findCustomerByEmail(email);
+        if (customer == null) {
+            throw new IllegalArgumentException("Could not find customer with email address " + email + ".");
+        }
+
+        Set<DietaryRestriction> newRestrictions = convertDietaryRestriction(dietaryRestrictions);
+
+        customer.setDietaryRestrictions(newRestrictions);
+        customerRepository.save(customer);
+
+        return true;
+
+    }
+
+    public String[] getDietaryRestriction(String email) {
+        Customer customer = customerRepository.findCustomerByEmail(email);
+        if (customer == null) {
+            throw new IllegalArgumentException("Could not find customer with email address " + email + ".");
+        }
+
+        Set<DietaryRestriction> newRestrictions = customer.getDietaryRestrictions();
+
+        String[] restrictions = new String[newRestrictions.size()];
+        int i = 0;
+        for (DietaryRestriction restriction : newRestrictions) {
+            restrictions[i] = restriction.toString();
+            i++;
+        }
+
+        return restrictions;
+
+    }
+
+
+
+
+    protected Set<DietaryRestriction> convertDietaryRestriction(String[] dietaryRestriction) {
+        if (dietaryRestriction == null) {
+            throw new IllegalArgumentException("Dietary restriction cannot be null.");
+        }
+        
+        Set<String> uniqueRestrictions = new HashSet<>();
+        Set<DietaryRestriction> set = new HashSet<>();
+        
+        for (String restriction : dietaryRestriction) {
+            String upperCaseRestriction = restriction.toUpperCase();
+            
+            // Check for duplicates
+            if (!uniqueRestrictions.add(upperCaseRestriction)) {
+                throw new IllegalArgumentException("Duplicate dietary restriction detected: " + restriction);
+            }
+            
+            try {
+                set.add(DietaryRestriction.valueOf(upperCaseRestriction));
+            } catch (IllegalArgumentException e) {
+                throw new IllegalArgumentException(restriction + " is not a valid dietary restriction.");
+            }
+        }
+        return set;
+    }
+
     protected boolean validatePassword(String password){
         if(password == null || password.isEmpty()){
             throw new IllegalArgumentException("Password cannot be empty.");
@@ -68,5 +135,6 @@ public class CustomerService {
         }
         return true;
     }
+
 
 }

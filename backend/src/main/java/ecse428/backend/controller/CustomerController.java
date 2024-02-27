@@ -51,4 +51,48 @@ public class CustomerController {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
     }
+
+    @PostMapping("/dietary-restrictions")
+    public ResponseEntity<?> updateDietaryRestrictions(@Valid @RequestBody CustomerDto customerDto, BindingResult result) {
+        if (result.hasErrors()) {
+            String errors = result.getAllErrors().stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .collect(Collectors.joining(", "));
+            return ResponseEntity.badRequest().body(errors);
+        }
+        try {
+            // Convert Set<DietaryRestriction> to String[] for the service method
+            String[] dietaryRestrictions = customerDto.getDietaryRestrictions().stream()
+                    .map(Enum::name) // Assuming DietaryRestriction is an enum and we want its name
+                    .toArray(String[]::new);
+            
+            // Call the service method with the email and converted dietary restrictions
+            boolean success = customerService.setDietaryRestriction(customerDto.getEmail(), dietaryRestrictions);
+            
+            return success
+                    ? ResponseEntity.ok().build()
+                    : ResponseEntity.internalServerError().build();
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
+
+
+    @GetMapping("/dietary-restrictions")
+    public ResponseEntity<?> getDietaryRestrictions(@Valid @RequestBody CustomerDto customerDto, BindingResult result) {
+        if (result.hasErrors()) {
+            String errors = result.getAllErrors().stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .collect(Collectors.joining(", "));
+            return ResponseEntity.badRequest().body(errors);
+        }
+        try {
+            String email = customerDto.getEmail();
+            String[] dietaryRestrictions = customerService.getDietaryRestriction(email);
+            return ResponseEntity.ok(dietaryRestrictions);
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
+
 }
