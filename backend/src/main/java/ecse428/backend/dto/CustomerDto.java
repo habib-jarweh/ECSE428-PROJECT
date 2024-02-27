@@ -35,9 +35,9 @@ public class CustomerDto {
     }
 
 
-    public CustomerDto(String email, String name, Set<SmartEats.DietaryRestriction> dietaryRestrictions, Set<Pair<LocalDate,Double>> weightHistory, Double weightGoal) {
+    public CustomerDto(String email, String name, Set<SmartEats.DietaryRestriction> dietaryRestrictions, Set<Pair<LocalDate,Double>> weightHistory) {
 
-
+    public CustomerDto(String email, String name, Set<SmartEats.DietaryRestriction> dietaryRestrictions, Double weightGoal) {
 
         this.email = email;
         this.password = null;
@@ -92,8 +92,7 @@ public class CustomerDto {
     }
 
     public Customer convertToEntity() {
-        return new Customer(this.getEmail(), this.getPassword(), this.getDietaryRestrictions(), this.getWeightHistory(), this.getWeightGoal());
-    }
+        return new Customer(this.getEmail(), this.getPassword(), this.getDietaryRestrictions(), this.getWeightHistory());
 
     public Double getWeightGoal() {
         return weightGoal;
@@ -103,7 +102,10 @@ public class CustomerDto {
         this.weightGoal = weightGoal;
     }
 
+    public Customer convertToEntity() {
+        return new Customer(this.getEmail(), this.getPassword(), this.getDietaryRestrictions(), this.getWeightGoal());
+        
 
-    
+    }
 
 }

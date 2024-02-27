@@ -31,13 +31,17 @@ public class Customer extends Account{
     }
 
 
-    public Customer(String email, String password, Set<DietaryRestriction> dietaryRestrictions, Set<Pair<LocalDate,Double>> weightHistory, Double weightGoal) {
+    public Customer(String email, String password, Set<DietaryRestriction> dietaryRestrictions, Set<Pair<LocalDate,Double>> weightHistory) {
+        this.setEmail(email);
+        this.setPassword(password);
+        this.setDietaryRestrictions(dietaryRestrictions);
+        this.setWeightHistory(weightHistory);
 
+    public Customer(String email, String password, Set<DietaryRestriction> dietaryRestrictions, Double weightGoal) {
         this.setEmail(email);
         this.setPassword(password);
         this.setDietaryRestrictions(dietaryRestrictions);
         this.setWeightGoal(weightGoal);
-        this.setWeightHistory(weightHistory);
 
     }
 
@@ -68,7 +72,7 @@ public class Customer extends Account{
 
     public Set<Pair<LocalDate,Double>> getWeightHistory() {
         return this.weightHistory;
-    }
+
     public Double getWeightGoal() {
         return this.weightGoal;
     }
@@ -89,9 +93,9 @@ public class Customer extends Account{
 
     public CustomerDto convertToDto() {
 
-        return new CustomerDto(this.getEmail(), this.getName(), this.getDietaryRestrictions(),this.getWeightHistory(), this.getWeightGoal());
+        return new CustomerDto(this.getEmail(), this.getName(), this.getDietaryRestrictions(),this.getWeightHistory());
 
-
+        return new CustomerDto(this.getEmail(), this.getName(), this.getDietaryRestrictions(), this.getWeightGoal());
 
     }
     
