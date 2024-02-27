@@ -1,5 +1,7 @@
 package ecse428.backend.model;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
@@ -10,9 +12,8 @@ import jakarta.persistence.OneToMany;
 
 public class SmartEats {
     
-   
     public enum DietaryRestriction {
-        Peanut, Dairy, Gluten, Vegan, Halal
+        PEANUT, DAIRY, GLUTEN, VEGAN, HALAL
     }
 
     public enum Ingredient {

@@ -4,6 +4,8 @@ package ecse428.backend.service;
 import ecse428.backend.dao.CustomerRepository;
 import ecse428.backend.dto.CustomerDto;
 import ecse428.backend.model.Customer;
+import ecse428.backend.model.SmartEats.DietaryRestriction;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -11,7 +13,13 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+
+import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.Set;
+
 
 
 public class CustomerServiceTest {
@@ -154,4 +162,104 @@ public class CustomerServiceTest {
         // Call the method under test and expect an exception
         assertThrows(IllegalArgumentException.class, () -> customerService.validatePassword("short"));
     }
+
+    @Test
+    public void testSetDietaryRestriction_Success() {
+        // Given
+        String email = "test@example.com";
+        Customer customer = new Customer(email);
+        when(customerRepository.findCustomerByEmail(email)).thenReturn(customer);
+        String[] dietaryRestrictions = {"DAIRY", "GLUTEN"};
+
+        // When
+        customerService.setDietaryRestriction(email, dietaryRestrictions);
+
+        // Then
+        verify(customerRepository, times(1)).save(customer);
+    }
+
+    @Test
+    public void testSetDietaryRestriction_CustomerNotFound() {
+        // Given
+        String email = "nonexistent@example.com";
+        when(customerRepository.findCustomerByEmail(email)).thenReturn(null);
+        String[] dietaryRestrictions = {"GLUTEN", "DAIRY"};
+
+        // When & Then
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> customerService.setDietaryRestriction(email, dietaryRestrictions));
+        assertEquals("Could not find customer with email address " + email + ".", exception.getMessage());
+    }
+
+    @Test
+    public void testSetDietaryRestriction_DuplicateRestrictions() {
+        // Given
+        String email = "duplicate@example.com";
+        Customer customer = new Customer(email);
+        when(customerRepository.findCustomerByEmail(email)).thenReturn(customer);
+        String[] dietaryRestrictions = {"GLUTEN", "GLUTEN"};
+
+        // When & Then
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> customerService.setDietaryRestriction(email, dietaryRestrictions));
+        assertEquals("Duplicate dietary restriction detected: GLUTEN", exception.getMessage());
+    }
+
+    @Test
+    public void testSetDietaryRestriction_InvalidRestriction() {
+        // Given
+        String email = "invalid@example.com";
+        Customer customer = new Customer(email);
+        when(customerRepository.findCustomerByEmail(email)).thenReturn(customer);
+        String[] dietaryRestrictions = {"DAIRY", "INVALID"};
+
+        // When & Then
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> customerService.setDietaryRestriction(email, dietaryRestrictions));
+        assertEquals("INVALID is not a valid dietary restriction.", exception.getMessage());
+    }
+
+    @Test
+    public void testSetDietaryRestriction_NullRestrictions() {
+        // Given
+        String email = "null@example.com";
+        Customer customer = new Customer(email);
+        when(customerRepository.findCustomerByEmail(email)).thenReturn(customer);
+
+        // When & Then
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> customerService.setDietaryRestriction(email, null));
+        assertEquals("Dietary restriction cannot be null.", exception.getMessage());
+    }
+
+    @Test
+    public void testGetDietaryRestriction_Success() {
+        // Mocking behavior
+        String email = "test@example.com";
+        Customer customer = new Customer(email);
+        Set<DietaryRestriction> dietaryRestrictions = EnumSet.of(DietaryRestriction.DAIRY, DietaryRestriction.GLUTEN);
+        customer.setDietaryRestrictions(dietaryRestrictions);
+        when(customerRepository.findCustomerByEmail(email)).thenReturn(customer);
+
+        // Call the method under test
+        String[] result = customerService.getDietaryRestriction(email);
+
+        // Verify the result
+        assertNotNull(result);
+        assertEquals(2, result.length);
+        assertEquals("DAIRY", result[0]);
+        assertEquals("GLUTEN", result[1]);
+    }
+
+    @Test
+    public void testGetDietaryRestriction_CustomerNotFound() {
+        // Mocking behavior
+        String email = "nonexistent@example.com";
+        when(customerRepository.findCustomerByEmail(email)).thenReturn(null);
+
+        // Call the method under test and expect an exception
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> customerService.getDietaryRestriction(email));
+        assertEquals("Could not find customer with email address " + email + ".", exception.getMessage());
+    }
+
+
+
+
+
 }
