@@ -25,7 +25,7 @@ Scenario: Upload incorrect weight (Error Handling)
     When the user navigates to the profile settings page
     And the user clicks on the "Edit weight" button
     And the user selects an incorrect weight
-    And the user clicks on the "Done" button
+    And the user clicks on the "	Done" button
     Then the user should see an error message indicating that the weight added failed
     And his/her account page should not display any changes to the weight 
 
