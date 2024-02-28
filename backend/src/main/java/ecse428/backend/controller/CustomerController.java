@@ -127,7 +127,7 @@ public class CustomerController {
         }
     }
 
-    @GetMapping("/weightHistory")
+    @PostMapping("/weightHistory")
     public ResponseEntity<?>updateUserWeightHistory(@Valid @RequestBody CustomerDto customerDto,@RequestParam Double weight, BindingResult result){
         if (result.hasErrors()) {
             String errors = result.getAllErrors().stream()

@@ -14,6 +14,9 @@ public class WeightDate {
     LocalDate date;
     Double Weight;
 
+    //Default constructor for JPA
+    protected WeightDate() {}
+
     public WeightDate(LocalDate date, Double Weight) {
         this.date = date;
         this.Weight = Weight;
