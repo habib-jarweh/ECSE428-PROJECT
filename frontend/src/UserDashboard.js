@@ -22,10 +22,11 @@ function UserDashboard() {
           <label htmlFor="dietaryRestriction" style={{ color: 'white' }}>Dietary Restriction:</label>
           <select id="dietaryRestriction" value={dietaryRestriction} onChange={(e) => setDietaryRestriction(e.target.value)}>
             <option value="">Select</option>
-            <option value="vegan">Vegan</option>
-            <option value="vegetarian">Vegetarian</option>
-            <option value="allergies">Allergies</option>
-            <option value="intolerances">Intolerances</option>
+            <option value="GLUTEN">Gluten</option>
+            <option value="PEANUT">Peanut</option>
+            <option value="HALAL">Halal</option>
+            <option value="DAIRY">Dairy</option>
+            <option value="VEGAN">Vegan</option>
           </select>
 
           <label htmlFor="currentWeight" style={{ color: 'white' }}>Current Weight (kg):</label>
