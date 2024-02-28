@@ -3,8 +3,7 @@ package ecse428.backend.service;
 import ecse428.backend.dao.CustomerRepository;
 import ecse428.backend.dto.CustomerDto;
 import ecse428.backend.model.Customer;
-import ecse428.backend.model.SmartEats;
-import ecse428.backend.model.SmartEats.Pair;
+import ecse428.backend.model.WeightDate;
 import java.time.LocalDate;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,18 +98,18 @@ public class CustomerService {
       throw new IllegalArgumentException("Could not find customer with email address " + customerDto.getEmail() + ".");
     }
 
-    Set<SmartEats.Pair<LocalDate, Double>> weightHistory = customer.getWeightHistory();
+    Set<WeightDate> weightHistory = customer.getWeightHistory();
 
-    for (Pair<LocalDate, Double> pair : weightHistory) {
-      if (pair.getFirst().equals(LocalDate.now())) {
-        pair.setSecond(weight);
+    for (WeightDate pair : weightHistory) {
+      if (pair.getDate().equals(LocalDate.now())) {
+        pair.setWeight(weight);
 
         customerRepository.save(customer);
         return customer.convertToDto();
       }
     }
 
-    weightHistory.add(new Pair<LocalDate, Double>(LocalDate.now(), weight));
+    weightHistory.add(new WeightDate(LocalDate.now(),weight));
     customerRepository.save(customer);
     return customer.convertToDto();
   }

@@ -2,33 +2,31 @@ package ecse428.backend.model;
 
 import ecse428.backend.dto.CustomerDto;
 import ecse428.backend.model.SmartEats.DietaryRestriction;
-import ecse428.backend.model.SmartEats.Pair;
-
 
 import java.util.Set;
-import java.time.LocalDate; 
+import java.time.LocalDate;
 import jakarta.persistence.*;
 
 @Entity
-public class Customer extends Account{
+public class Customer extends Account {
 
     private String billingAddress;
     private Integer points;
     private Set<DietaryRestriction> dietaryRestrictions;
-    private Set<Pair<LocalDate, Double>> weightHistory;
+    private Set<WeightDate> weightHistory;
 
     // Default constructor for JPA
-    protected Customer() {}
+    protected Customer() {
+    }
 
     public Customer(String email) {
         this.setEmail(email);
     }
 
-    public Customer(String email, String password, Set<DietaryRestriction> dietaryRestrictions, Set<Pair<LocalDate,Double>> weightHistory) {
+    public Customer(String email, String password, Set<DietaryRestriction> dietaryRestrictions) {
         this.setEmail(email);
         this.setPassword(password);
         this.setDietaryRestrictions(dietaryRestrictions);
-        this.setWeightHistory(weightHistory);
     }
 
     public String getBillingAddress() {
@@ -55,16 +53,16 @@ public class Customer extends Account{
         this.dietaryRestrictions = dietaryRestrictions;
     }
 
-    public Set<Pair<LocalDate,Double>> getWeightHistory() {
+    public Set<WeightDate> getWeightHistory() {
         return this.weightHistory;
     }
 
-    public void setWeightHistory(Set<Pair<LocalDate,Double>> weightHistory) {
+    public void setWeightHistory(Set<WeightDate> weightHistory) {
         this.weightHistory = weightHistory;
     }
 
     public CustomerDto convertToDto() {
-        return new CustomerDto(this.getEmail(), this.getName(), this.getDietaryRestrictions(),this.getWeightHistory());
+        return new CustomerDto(this.getEmail(), this.getName(), this.getDietaryRestrictions());
     }
-    
+
 }

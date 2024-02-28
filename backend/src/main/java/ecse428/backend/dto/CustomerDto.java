@@ -3,7 +3,7 @@ package ecse428.backend.dto;
 
 import ecse428.backend.model.Customer;
 import ecse428.backend.model.SmartEats;
-import ecse428.backend.model.SmartEats.Pair;
+import ecse428.backend.model.WeightDate;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 
@@ -19,9 +19,7 @@ public class CustomerDto {
     private String password;
     
     private Set<SmartEats.DietaryRestriction> dietaryRestrictions;
-    private Set<SmartEats.Pair<LocalDate, Double>> weightHistory;
-
-   
+    private Set<WeightDate> weightHistory;
 
     public CustomerDto() {}
 
@@ -30,12 +28,11 @@ public class CustomerDto {
         this.password = password;
     }
 
-    public CustomerDto(String email, String name, Set<SmartEats.DietaryRestriction> dietaryRestrictions, Set<Pair<LocalDate,Double>> weightHistory) {
+    public CustomerDto(String email, String name, Set<SmartEats.DietaryRestriction> dietaryRestrictions) {
         this.email = email;
         this.password = null;
         this.name = name;
         this.dietaryRestrictions = dietaryRestrictions;
-        this.weightHistory = weightHistory;
     }
 
     public String getEmail() {
@@ -70,16 +67,16 @@ public class CustomerDto {
         this.dietaryRestrictions = dietaryRestrictions;
     }
 
-    public Set<SmartEats.Pair<LocalDate,Double>> getWeightHistory() {
+    public Set<WeightDate> getWeightHistory() {
         return this.weightHistory;
     }
 
-    public void setWeightHistory(Set<SmartEats.Pair<LocalDate,Double>> weightHistory) {
+    public void setWeightHistory(Set<WeightDate> weightHistory) {
         this.weightHistory = weightHistory;
     }
 
     public Customer convertToEntity() {
-        return new Customer(this.getEmail(), this.getPassword(), this.getDietaryRestrictions(), this.getWeightHistory());
+        return new Customer(this.getEmail(), this.getPassword(), this.getDietaryRestrictions());
     }
 
 }
