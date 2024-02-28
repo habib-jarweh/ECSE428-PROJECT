@@ -4,7 +4,6 @@ package ecse428.backend.service;
 import ecse428.backend.dao.CustomerRepository;
 import ecse428.backend.dto.CustomerDto;
 import ecse428.backend.model.Customer;
-import ecse428.backend.model.SmartEats;
 import ecse428.backend.model.SmartEats.DietaryRestriction;
 import ecse428.backend.model.WeightDate;
 
