@@ -1,7 +1,5 @@
 package ecse428.backend.model;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
@@ -95,46 +93,5 @@ public class SmartEats {
         this.mealItems = mealItems;
     }
 
-    public static class Pair<F, S> {
-
-        private F first;
-        private S second;
-    
-        public Pair(F first, S second) {
-          this.first = first;
-          this.second = second;
-        }
-    
-        public F getFirst() {
-          return first;
-        }
-    
-        public S getSecond() {
-          return second;
-        }
-    
-        public void setFirst(F first) {
-          this.first = first;
-        }
-    
-        public void setSecond(S second) {
-            this.second = second;
-        }
-    
-        @Override
-        public int hashCode() {
-          return first.hashCode() ^ second.hashCode();
-        }
-        
-        @Override
-        public boolean equals(Object o) {
-          if (!(o instanceof Pair)) return false;
-          Pair pairo = (Pair) o;
-          return (
-            this.first.equals(pairo.getFirst()) &&
-            this.second.equals(pairo.getSecond())
-          );
-        }
-      }
 
 }

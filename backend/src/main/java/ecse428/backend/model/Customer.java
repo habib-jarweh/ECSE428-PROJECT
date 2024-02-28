@@ -2,11 +2,8 @@ package ecse428.backend.model;
 
 import ecse428.backend.dto.CustomerDto;
 import ecse428.backend.model.SmartEats.DietaryRestriction;
-import ecse428.backend.model.SmartEats.Pair;
 
-import java.time.LocalDate;
 import java.util.Set;
-import java.time.LocalDate; 
 
 
 import jakarta.persistence.*;
