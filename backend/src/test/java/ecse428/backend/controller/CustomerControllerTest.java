@@ -19,6 +19,7 @@ import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
@@ -203,6 +204,33 @@ public class CustomerControllerTest {
 
         // Verify that the service method is never called due to invalid request
         verify(customerService, times(0)).addUpdateWeightGoal(any(CustomerDto.class), anyDouble());
+    }
+
+
+    @Test
+    void updateUserWeightHistory_ValidUser_ReturnsOk() throws Exception {
+                // Arrange
+                CustomerDto customerDto = new CustomerDto("test@example.com", "password");
+
+                // Act & Assert
+                mockMvc.perform(get("/customers/weightHistory")
+                                .content(objectMapper.writeValueAsString(customerDto))
+                                .param("weight", "101.1")
+                                .contentType(MediaType.APPLICATION_JSON))
+                        .andExpect(status().isOk());
+
+                verify(customerService, times(1)).addUpdateWeightHistory(any(CustomerDto.class), any(Double.class));
+    }
+
+    @Test
+    void updateUserWeightHistory_InvalidUser_ReturnsBadRequest() throws Exception {
+
+                // Act & Assert
+                mockMvc.perform(get("/customers/weightHistory")
+                                .contentType(MediaType.APPLICATION_JSON))
+                        .andExpect(status().isBadRequest());
+
+                verify(customerService, times(0)).checkCustomerCredentials(any(CustomerDto.class));
     }
 
 

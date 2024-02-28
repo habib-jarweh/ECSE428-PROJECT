@@ -2,8 +2,12 @@ package ecse428.backend.model;
 
 import ecse428.backend.dto.CustomerDto;
 import ecse428.backend.model.SmartEats.DietaryRestriction;
+import ecse428.backend.model.SmartEats.Pair;
 
+import java.time.LocalDate;
 import java.util.Set;
+import java.time.LocalDate; 
+
 
 import jakarta.persistence.*;
 
@@ -15,6 +19,7 @@ public class Customer extends Account{
     private Set<DietaryRestriction> dietaryRestrictions;
     private String pfpImageLink;
     private Double weightGoal;
+    private Set<Pair<LocalDate, Double>> weightHistory;
 
 
     // Default constructor for JPA
@@ -24,12 +29,13 @@ public class Customer extends Account{
         this.setEmail(email);
     }
 
-    public Customer(String email, String password, Set<DietaryRestriction> dietaryRestrictions, Double weightGoal) {
+    public Customer(String email, String password, Set<DietaryRestriction> dietaryRestrictions, Double weightGoal, Set<Pair<LocalDate,Double>> weightHistory) {
         this.setEmail(email);
         this.setPassword(password);
         
         this.setDietaryRestrictions(dietaryRestrictions);
         this.setWeightGoal(weightGoal);
+        this.setWeightHistory(weightHistory);
     }
 
     public String getBillingAddress() {
@@ -74,7 +80,15 @@ public class Customer extends Account{
     }
 
     public CustomerDto convertToDto() {
-        return new CustomerDto(this.getEmail(), this.getName(), this.getDietaryRestrictions(), this.getWeightGoal());
+        return new CustomerDto(this.getEmail(), this.getName(), this.getDietaryRestrictions(), this.getWeightGoal(), this.getWeightHistory());
+    }
+
+    public Set<Pair<LocalDate,Double>> getWeightHistory() {
+        return this.weightHistory;
+    }
+
+    public void setWeightHistory(Set<Pair<LocalDate,Double>> weightHistory) {
+        this.weightHistory = weightHistory;
     }
 
     
