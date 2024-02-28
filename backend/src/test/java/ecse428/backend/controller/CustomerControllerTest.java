@@ -172,4 +172,144 @@ public class CustomerControllerTest {
         verify(customerService, times(0)).setDietaryRestriction(anyString(), any(String[].class));
     }
 
+    // @Test
+    // void updateWeightGoal_ValidRequest_ReturnsOk() throws Exception {
+    //     // Arrange
+    //     CustomerDto customerDto = new CustomerDto("test@example.com", "password");
+    //     //Double weightGoal = 75.0; // Example weight goal
+    //    // when(customerService.setWeightGoal(customerDto, weightGoal)).thenReturn(customerDto);
+
+    //     // Act & Assert
+    //     mockMvc.perform(post("/customers/setWeightGoal")
+    //                     .content(objectMapper.writeValueAsString(customerDto))
+    //                     .param("weightGoal", "75.0")
+    //                     .contentType(MediaType.APPLICATION_JSON))
+    //             .andExpect(status().isOk());
+
+    //     verify(customerService, times(1)).setWeightGoal(any(CustomerDto.class), any(Double.class));
+    // }
+
+    // @Test
+    // void updateWeightGoal_InvalidRequest_ReturnsBadRequest() throws Exception {
+    //     //Arrange
+    //     CustomerDto customerDto = new CustomerDto("", ""); // Invalid DTO
+    //     Double weightGoal = null; // Missing weight goal
+
+    //     //Act & Assert
+    //     mockMvc.perform(post("/customers/setWeightGoal")
+    //                     .content(objectMapper.writeValueAsString(customerDto))
+    //                     .param("weightGoal", "") // Not setting the weight goal intentionally
+    //                     .contentType(MediaType.APPLICATION_JSON))
+    //             .andExpect(status().isBadRequest());
+
+
+
+    //     verify(customerService, times(0)).setWeightGoal(any(CustomerDto.class), any(Double.class));
+    // }
+    // @Test
+    // public void testAddUpdateWeightGoal_Success() {
+    //     // Mocking behavior
+    //     Customer customer = new Customer("test@example.com");
+    //     when(customerRepository.findCustomerByEmail("test@example.com")).thenReturn(customer);
+
+    //     CustomerDto customerDto = new CustomerDto("test@example.com", "whatever");
+
+    //     // Assuming the initial weight goal is not set or different
+    //     CustomerDto result = customerService.addUpdateWeightGoal(customerDto, 75.0);
+
+    //     assertNotNull(result);
+    //     assertEquals(75.0, result.getWeightGoal());
+
+    //     verify(customerRepository, times(1)).save(any(Customer.class));
+    // }
+
+    // @Test
+    // public void testAddUpdateWeightGoal_CustomerNotFound() {
+    //     // Mocking behavior
+    //     when(customerRepository.findCustomerByEmail("nonexistent@example.com")).thenReturn(null);
+
+    //     CustomerDto customerDto = new CustomerDto("nonexistent@example.com", "whatever");
+
+    //     // Expect an exception
+    //     assertThrows(IllegalArgumentException.class, () -> customerService.addUpdateWeightGoal(customerDto, 75.0));
+    // }
+
+    // @Test
+    // public void testAddUpdateWeightGoal_InvalidWeightGoal() {
+    //     Customer customer = new Customer("test@example.com");
+    //     when(customerRepository.findCustomerByEmail("test@example.com")).thenReturn(customer);
+
+    //     CustomerDto customerDto = new CustomerDto("test@example.com", "whatever");
+
+    //     // Expect an exception for invalid weight goal
+    //     assertThrows(IllegalArgumentException.class, () -> customerService.addUpdateWeightGoal(customerDto, -10.0));
+    // }
+
+    @Test
+    void setWeightGoal_ValidRequest_ReturnsOk() throws Exception {
+        // Arrange
+        CustomerDto customerDto = new CustomerDto("test@example.com", "password");
+        double weightGoal = 70.0;
+
+        when(customerService.setWeightGoal(any(CustomerDto.class), eq(weightGoal))).thenReturn(customerDto);
+
+        // Act & Assert
+        mockMvc.perform(post("/customers/setWeightGoal")
+                        .param("weightGoal", String.valueOf(weightGoal))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(customerDto)))
+                .andExpect(status().isOk());
+
+        verify(customerService, times(1)).setWeightGoal(any(CustomerDto.class), eq(weightGoal));
+    }
+    @Test
+    void setWeightGoal_InvalidRequest_ReturnsBadRequest() throws Exception {
+        // Arrange
+        CustomerDto customerDto = new CustomerDto("test@example.com", "password");
+        // Invalid weight goal (not provided in this case)
+
+        // Act & Assert
+        mockMvc.perform(post("/customers/setWeightGoal")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(customerDto)))
+                .andExpect(status().isBadRequest());
+
+        // Verify that the service method is never called due to invalid request
+        verify(customerService, times(0)).setWeightGoal(any(CustomerDto.class), anyDouble());
+    }
+
+    @Test
+    void updateWeightGoal_ValidRequest_ReturnsOk() throws Exception {
+        // Arrange
+        CustomerDto customerDto = new CustomerDto("test@example.com", "password");
+        double newWeightGoal = 65.0;
+
+        when(customerService.addUpdateWeightGoal(any(CustomerDto.class), eq(newWeightGoal))).thenReturn(customerDto);
+
+        // Act & Assert
+        mockMvc.perform(post("/customers/weightGoal")
+                        .param("weightGoal", String.valueOf(newWeightGoal))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(customerDto)))
+                .andExpect(status().isOk());
+
+        verify(customerService, times(1)).addUpdateWeightGoal(any(CustomerDto.class), eq(newWeightGoal));
+    }
+    @Test
+    void updateWeightGoal_InvalidRequest_ReturnsBadRequest() throws Exception {
+        // Arrange
+        CustomerDto customerDto = new CustomerDto("test@example.com", "password");
+        // Invalid weight goal (not provided in this case)
+
+        // Act & Assert
+        mockMvc.perform(post("/customers/weightGoal")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(customerDto)))
+                .andExpect(status().isBadRequest());
+
+        // Verify that the service method is never called due to invalid request
+        verify(customerService, times(0)).addUpdateWeightGoal(any(CustomerDto.class), anyDouble());
+    }
+
+
 }
