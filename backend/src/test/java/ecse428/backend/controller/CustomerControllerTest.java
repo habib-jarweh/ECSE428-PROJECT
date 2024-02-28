@@ -85,7 +85,7 @@ public class CustomerControllerTest {
         when(customerService.checkCustomerCredentials(customerDto)).thenReturn(true);
 
         // Act & Assert
-        mockMvc.perform(get("/customers/login")
+        mockMvc.perform(post("/customers/login")
                         .content(objectMapper.writeValueAsString(customerDto))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
@@ -100,7 +100,7 @@ public class CustomerControllerTest {
         BindingResult result = new BeanPropertyBindingResult(customerDto, "customerDto");
 
         // Act & Assert
-        mockMvc.perform(get("/customers/login")
+        mockMvc.perform(post("/customers/login")
                         .content(objectMapper.writeValueAsString(customerDto))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());

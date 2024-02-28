@@ -38,7 +38,7 @@ public class CustomerController {
         }
     }
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<?> checkUserCredentials(@Valid @RequestBody CustomerDto customerDto, BindingResult result) {
         if (result.hasErrors()) {
             String errors = result.getAllErrors().stream()
