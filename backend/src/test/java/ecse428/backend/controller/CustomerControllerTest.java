@@ -213,7 +213,7 @@ public class CustomerControllerTest {
                 CustomerDto customerDto = new CustomerDto("test@example.com", "password");
 
                 // Act & Assert
-                mockMvc.perform(get("/customers/weightHistory")
+                mockMvc.perform(post("/customers/weightHistory")
                                 .content(objectMapper.writeValueAsString(customerDto))
                                 .param("weight", "101.1")
                                 .contentType(MediaType.APPLICATION_JSON))
@@ -226,7 +226,7 @@ public class CustomerControllerTest {
     void updateUserWeightHistory_InvalidUser_ReturnsBadRequest() throws Exception {
 
                 // Act & Assert
-                mockMvc.perform(get("/customers/weightHistory")
+                mockMvc.perform(post("/customers/weightHistory")
                                 .contentType(MediaType.APPLICATION_JSON))
                         .andExpect(status().isBadRequest());
 
