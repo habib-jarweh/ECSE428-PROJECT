@@ -5,6 +5,7 @@ import ecse428.backend.dao.CustomerRepository;
 import ecse428.backend.dto.CustomerDto;
 import ecse428.backend.model.Customer;
 import ecse428.backend.model.SmartEats.DietaryRestriction;
+import ecse428.backend.model.WeightDate;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+import java.time.LocalDate;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
@@ -256,6 +258,61 @@ public class CustomerServiceTest {
         // Call the method under test and expect an exception
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> customerService.getDietaryRestriction(email));
         assertEquals("Could not find customer with email address " + email + ".", exception.getMessage());
+    }
+
+        @Test
+    public void testAddUpdateWeight_CustomerNull() {
+
+        when(customerRepository.findCustomerByEmail("test@example.com")).thenReturn(null);
+
+        CustomerDto customerDto = new CustomerDto("test@example.com", "whatever");
+
+        assertThrows(IllegalArgumentException.class, () -> customerService.addUpdateWeightHistory(customerDto, 1.0));
+    }
+
+    @Test
+    public void testAddUpdateWeight_UpdateSuccess() {
+        //set customer for use
+        Customer customer = new Customer("test@example.com");
+
+        Set<WeightDate> weightHistory = new HashSet<WeightDate>();
+        weightHistory.add(new WeightDate(LocalDate.now(), 101.1));
+
+        customer.setWeightHistory(weightHistory);
+
+        when(customerRepository.findCustomerByEmail("test@example.com")).thenReturn(customer);
+
+        CustomerDto customerDto = new CustomerDto("test@example.com", "whatever");
+
+        CustomerDto result = customerService.addUpdateWeightHistory(customerDto, 100.4);
+
+        assertNotNull(result);
+        //size should be one instead of two as existing entry on current day updated
+        assertEquals(1, result.getWeightHistory().size());
+
+        verify(customerRepository, times(1)).save(any(Customer.class));
+
+    }
+
+    @Test void testAddUpdateWeight_AddSuccess() {
+        //set customer for use
+        Customer customer = new Customer("test@example.com");
+
+        Set<WeightDate> weightHistory = new HashSet<WeightDate>();
+
+        customer.setWeightHistory(weightHistory);
+
+        when(customerRepository.findCustomerByEmail("test@example.com")).thenReturn(customer);
+
+        CustomerDto customerDto = new CustomerDto("test@example.com", "whatever");
+
+        CustomerDto result = customerService.addUpdateWeightHistory(customerDto, 100.4);
+
+        assertNotNull(result);
+        //size should be one from added history entry
+        assertEquals(1, result.getWeightHistory().size());
+
+        verify(customerRepository, times(1)).save(any(Customer.class));
     }
 
 

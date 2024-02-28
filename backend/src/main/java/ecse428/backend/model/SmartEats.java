@@ -1,7 +1,5 @@
 package ecse428.backend.model;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
@@ -94,5 +92,6 @@ public class SmartEats {
     public void setMealItems(Set<MealItem> mealItems) {
         this.mealItems = mealItems;
     }
+
 
 }

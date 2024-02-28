@@ -3,11 +3,11 @@ package ecse428.backend.service;
 import ecse428.backend.dao.CustomerRepository;
 import ecse428.backend.dto.CustomerDto;
 import ecse428.backend.model.Customer;
+import ecse428.backend.model.WeightDate;
 import ecse428.backend.model.SmartEats.DietaryRestriction;
-
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -178,6 +178,29 @@ public class CustomerService {
         double weightGoal = customer.getWeightGoal();
         return weightGoal;
 
+    }
+    public CustomerDto addUpdateWeightHistory(CustomerDto customerDto,Double weight) {
+
+        Customer customer = customerRepository.findCustomerByEmail(customerDto.getEmail());
+
+        if (customer == null) {
+        throw new IllegalArgumentException("Could not find customer with email address " + customerDto.getEmail() + ".");
+        }
+
+        Set<WeightDate> weightHistory = customer.getWeightHistory();
+
+        for (WeightDate pair : weightHistory) {
+        if (pair.getDate().equals(LocalDate.now())) {
+            pair.setWeight(weight);
+
+            customerRepository.save(customer);
+            return customer.convertToDto();
+        }
+        }
+
+        weightHistory.add(new WeightDate(LocalDate.now(), weight));
+        customerRepository.save(customer);
+        return customer.convertToDto();
     }
     
     
