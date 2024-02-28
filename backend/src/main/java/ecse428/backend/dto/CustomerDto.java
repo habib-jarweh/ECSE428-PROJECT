@@ -3,11 +3,11 @@ package ecse428.backend.dto;
 
 import ecse428.backend.model.Customer;
 import ecse428.backend.model.SmartEats;
+import ecse428.backend.model.WeightDate;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 
 import java.util.Set;
-
 
 public class CustomerDto {
 
@@ -19,6 +19,7 @@ public class CustomerDto {
 
     private Set<SmartEats.DietaryRestriction> dietaryRestrictions;
     private Double weightGoal;
+    private Set<WeightDate> weightHistory;
 
     public CustomerDto() {}
 
@@ -27,12 +28,13 @@ public class CustomerDto {
         this.password = password;
     }
 
-    public CustomerDto(String email, String name, Set<SmartEats.DietaryRestriction> dietaryRestrictions, Double weightGoal) {
+    public CustomerDto(String email, String name, Set<SmartEats.DietaryRestriction> dietaryRestrictions, Double weightGoal, Set<WeightDate> weightHistory) {
         this.email = email;
         this.password = null;
         this.name = name;
         this.dietaryRestrictions = dietaryRestrictions;
         this.weightGoal = weightGoal;
+        this.weightHistory = weightHistory;
     }
 
     public String getEmail() {
@@ -75,9 +77,16 @@ public class CustomerDto {
         this.weightGoal = weightGoal;
     }
 
+    public Set<WeightDate> getWeightHistory() {
+        return this.weightHistory;
+    }
+
+    public void setWeightHistory(Set<WeightDate> weightHistory) {
+        this.weightHistory = weightHistory;
+    }
+
     public Customer convertToEntity() {
-        return new Customer(this.getEmail(), this.getPassword(), this.getDietaryRestrictions(), this.getWeightGoal());
-        
+        return new Customer(this.getEmail(), this.getPassword(), this.getDietaryRestrictions(), this.getWeightGoal(), this.getWeightHistory());  
     }
 
 }

@@ -5,6 +5,7 @@ import ecse428.backend.model.SmartEats.DietaryRestriction;
 
 import java.util.Set;
 
+
 import jakarta.persistence.*;
 
 @Entity
@@ -15,6 +16,7 @@ public class Customer extends Account{
     private Set<DietaryRestriction> dietaryRestrictions;
     private String pfpImageLink;
     private Double weightGoal;
+    private Set<WeightDate> weightHistory;
 
 
     // Default constructor for JPA
@@ -24,7 +26,7 @@ public class Customer extends Account{
         this.setEmail(email);
     }
 
-    public Customer(String email, String password, Set<DietaryRestriction> dietaryRestrictions, Double weightGoal) {
+    public Customer(String email, String password, Set<DietaryRestriction> dietaryRestrictions, Double weightGoal, Set<WeightDate> weightHistory) {
         this.setEmail(email);
         this.setPassword(password);
         
@@ -74,7 +76,17 @@ public class Customer extends Account{
     }
 
     public CustomerDto convertToDto() {
-        return new CustomerDto(this.getEmail(), this.getName(), this.getDietaryRestrictions(), this.getWeightGoal());
+        return new CustomerDto(this.getEmail(), this.getName(), this.getDietaryRestrictions(), this.getWeightGoal(), this.getWeightHistory());
+    }
+
+    
+    @OneToMany(cascade = {CascadeType.ALL})
+    public Set<WeightDate> getWeightHistory() {
+        return this.weightHistory;
+    }
+
+    public void setWeightHistory(Set<WeightDate> weightHistory) {
+        this.weightHistory = weightHistory;
     }
 
     

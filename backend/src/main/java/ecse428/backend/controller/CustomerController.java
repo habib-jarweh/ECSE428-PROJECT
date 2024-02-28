@@ -128,5 +128,20 @@ public class CustomerController {
         }
     }
 
+    @PostMapping("/weightHistory")
+    public ResponseEntity<?>updateUserWeightHistory(@Valid @RequestBody CustomerDto customerDto,@RequestParam Double weight, BindingResult result){
+        if (result.hasErrors()) {
+            String errors = result.getAllErrors().stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .collect(Collectors.joining(", "));
+            return ResponseEntity.badRequest().body(errors);
+        }
+        try{
+            return ResponseEntity.ok(customerService.addUpdateWeightHistory(customerDto,weight));
+        }catch(IllegalArgumentException ex){
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
+
 
 }
