@@ -6,6 +6,7 @@ import ecse428.backend.dto.CustomerDto;
 import ecse428.backend.model.Customer;
 import ecse428.backend.model.SmartEats;
 import ecse428.backend.model.SmartEats.DietaryRestriction;
+import ecse428.backend.model.WeightDate;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -275,8 +276,8 @@ public class CustomerServiceTest {
         //set customer for use
         Customer customer = new Customer("test@example.com");
 
-        Set<SmartEats.Pair<LocalDate, Double>> weightHistory = new HashSet<SmartEats.Pair<LocalDate, Double>>();
-        weightHistory.add(new SmartEats.Pair(LocalDate.now(), 101.1));
+        Set<WeightDate> weightHistory = new HashSet<WeightDate>();
+        weightHistory.add(new WeightDate(LocalDate.now(), 101.1));
 
         customer.setWeightHistory(weightHistory);
 
@@ -298,7 +299,7 @@ public class CustomerServiceTest {
         //set customer for use
         Customer customer = new Customer("test@example.com");
 
-        Set<SmartEats.Pair<LocalDate, Double>> weightHistory = new HashSet<SmartEats.Pair<LocalDate, Double>>();
+        Set<WeightDate> weightHistory = new HashSet<WeightDate>();
 
         customer.setWeightHistory(weightHistory);
 

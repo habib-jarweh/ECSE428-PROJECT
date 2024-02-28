@@ -3,12 +3,11 @@ package ecse428.backend.dto;
 
 import ecse428.backend.model.Customer;
 import ecse428.backend.model.SmartEats;
-import ecse428.backend.model.SmartEats.Pair;
+import ecse428.backend.model.WeightDate;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 
 import java.util.Set;
-import java.time.LocalDate;
 
 public class CustomerDto {
 
@@ -20,7 +19,7 @@ public class CustomerDto {
 
     private Set<SmartEats.DietaryRestriction> dietaryRestrictions;
     private Double weightGoal;
-    private Set<SmartEats.Pair<LocalDate, Double>> weightHistory;
+    private Set<WeightDate> weightHistory;
 
     public CustomerDto() {}
 
@@ -29,7 +28,7 @@ public class CustomerDto {
         this.password = password;
     }
 
-    public CustomerDto(String email, String name, Set<SmartEats.DietaryRestriction> dietaryRestrictions, Double weightGoal, Set<Pair<LocalDate,Double>> weightHistory) {
+    public CustomerDto(String email, String name, Set<SmartEats.DietaryRestriction> dietaryRestrictions, Double weightGoal, Set<WeightDate> weightHistory) {
         this.email = email;
         this.password = null;
         this.name = name;
@@ -78,11 +77,11 @@ public class CustomerDto {
         this.weightGoal = weightGoal;
     }
 
-    public Set<SmartEats.Pair<LocalDate,Double>> getWeightHistory() {
+    public Set<WeightDate> getWeightHistory() {
         return this.weightHistory;
     }
 
-    public void setWeightHistory(Set<SmartEats.Pair<LocalDate,Double>> weightHistory) {
+    public void setWeightHistory(Set<WeightDate> weightHistory) {
         this.weightHistory = weightHistory;
     }
 
