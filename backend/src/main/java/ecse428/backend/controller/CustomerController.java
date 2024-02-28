@@ -94,5 +94,35 @@ public class CustomerController {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
     }
+    @PostMapping("/setWeightGoal")
+    public ResponseEntity<?> setWeightGoal(@Valid @RequestBody CustomerDto customerDto, @RequestParam Double weightGoal, BindingResult result) {
+        if (result.hasErrors()) {
+            String errors = result.getAllErrors().stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .collect(Collectors.joining(", "));
+            return ResponseEntity.badRequest().body(errors);
+        }
+        try {
+            return ResponseEntity.ok(customerService.setWeightGoal(customerDto, weightGoal));
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
+
+    @PostMapping("/weightGoal")
+    public ResponseEntity<?> updateWeightGoal(@Valid @RequestBody CustomerDto customerDto, @RequestParam Double weightGoal, BindingResult result) {
+        if (result.hasErrors()) {
+            String errors = result.getAllErrors().stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .collect(Collectors.joining(", "));
+            return ResponseEntity.badRequest().body(errors);
+        }
+        try {
+            return ResponseEntity.ok(customerService.addUpdateWeightGoal(customerDto, weightGoal));
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
+
 
 }
