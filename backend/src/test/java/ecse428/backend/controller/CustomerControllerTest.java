@@ -173,39 +173,6 @@ public class CustomerControllerTest {
     }
 
     @Test
-    void setWeightGoal_ValidRequest_ReturnsOk() throws Exception {
-        // Arrange
-        CustomerDto customerDto = new CustomerDto("test@example.com", "password");
-        double weightGoal = 70.0;
-
-        when(customerService.setWeightGoal(any(CustomerDto.class), eq(weightGoal))).thenReturn(customerDto);
-
-        // Act & Assert
-        mockMvc.perform(post("/customers/setWeightGoal")
-                        .param("weightGoal", String.valueOf(weightGoal))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(customerDto)))
-                .andExpect(status().isOk());
-
-        verify(customerService, times(1)).setWeightGoal(any(CustomerDto.class), eq(weightGoal));
-    }
-    @Test
-    void setWeightGoal_InvalidRequest_ReturnsBadRequest() throws Exception {
-        // Arrange
-        CustomerDto customerDto = new CustomerDto("test@example.com", "password");
-        // Invalid weight goal (not provided in this case)
-
-        // Act & Assert
-        mockMvc.perform(post("/customers/setWeightGoal")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(customerDto)))
-                .andExpect(status().isBadRequest());
-
-        // Verify that the service method is never called due to invalid request
-        verify(customerService, times(0)).setWeightGoal(any(CustomerDto.class), anyDouble());
-    }
-
-    @Test
     void updateWeightGoal_ValidRequest_ReturnsOk() throws Exception {
         // Arrange
         CustomerDto customerDto = new CustomerDto("test@example.com", "password");

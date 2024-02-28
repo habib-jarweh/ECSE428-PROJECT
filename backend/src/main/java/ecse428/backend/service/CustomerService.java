@@ -168,6 +168,17 @@ public class CustomerService {
         customerRepository.save(customer);
         return customer.convertToDto();
     }
+
+    public double getWeightGoal(String email) {
+        Customer customer = customerRepository.findCustomerByEmail(email);
+        if (customer == null) {
+            throw new IllegalArgumentException("Could not find customer with email address " + email + ".");
+        }
+
+        double weightGoal = customer.getWeightGoal();
+        return weightGoal;
+
+    }
     
     
 
