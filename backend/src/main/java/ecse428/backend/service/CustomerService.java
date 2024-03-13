@@ -7,7 +7,10 @@ import ecse428.backend.model.WeightDate;
 import ecse428.backend.model.SmartEats.DietaryRestriction;
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -201,6 +204,16 @@ public class CustomerService {
         weightHistory.add(new WeightDate(LocalDate.now(), weight));
         customerRepository.save(customer);
         return customer.convertToDto();
+    }
+
+    public List<CustomerDto> getAllCustomers() {
+
+        //Return null if no customers
+        if(customerRepository.findAll() == null || customerRepository.findAll().isEmpty()){
+            return null;
+        }
+
+        return customerRepository.findAll().stream().map(Customer::convertToDto).collect(Collectors.toList());
     }
     
     
