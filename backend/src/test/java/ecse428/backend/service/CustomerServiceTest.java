@@ -317,6 +317,40 @@ public class CustomerServiceTest {
     }
 
     @Test
+    public void testDeleteCustomer_Success() {
+        // Arrange
+        String email = "test@example.com";
+        Customer mockCustomer = new Customer(email);
+
+        when(customerRepository.findCustomerByEmail(email)).thenReturn(mockCustomer);
+
+        // Act
+        String result = customerService.deleteCustomer(email);
+
+        // Assert
+        assertEquals("Customer with email " + email + " successfully deleted.", result);
+        verify(customerRepository, times(1)).delete(mockCustomer);
+    }
+
+    @Test
+    public void testDeleteCustomer_Failure() {
+        // Arrange
+        String email = "nonexistent@example.com";
+        when(customerRepository.findCustomerByEmail(email)).thenReturn(null);
+
+        // Act & Assert
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            customerService.deleteCustomer(email);
+        });
+
+        String expectedMessage = "No customer found with email: " + email;
+        String actualMessage = exception.getMessage();
+
+        assertEquals(expectedMessage, actualMessage);
+        verify(customerRepository, never()).delete(any(Customer.class));
+    }
+
+    @Test
     public void testGetAllCustomers() {
         // Mocking behavior
         when(customerRepository.findAll()).thenReturn(null);
