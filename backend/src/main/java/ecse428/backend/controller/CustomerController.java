@@ -143,5 +143,29 @@ public class CustomerController {
         }
     }
 
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> deleteUser(@RequestBody CustomerDto customerDto, BindingResult result) {
+        if (result.hasErrors()) {
+            String errors = result.getAllErrors().stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .collect(Collectors.joining(", "));
+            return ResponseEntity.badRequest().body(errors);
+        }
+
+        String email = customerDto.getEmail();
+        try {
+            if (email == null || email.trim().isEmpty()) {
+                throw new IllegalArgumentException("Email must not be empty");
+            }
+            String message = customerService.deleteCustomer(email);
+            return ResponseEntity.ok().body(message);
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        } catch (Exception ex) {
+            return ResponseEntity.internalServerError().body("An error occurred while deleting the customer.");
+        }
+    }
+
+
 
 }

@@ -202,6 +202,16 @@ public class CustomerService {
         customerRepository.save(customer);
         return customer.convertToDto();
     }
+
+    public String deleteCustomer(String identifier) {
+        Customer customer = customerRepository.findCustomerByEmail(identifier);
+        if (customer == null) {
+            throw new IllegalArgumentException("No customer found with email: " + identifier);
+        }
+        customerRepository.delete(customer);
+        return "Customer with email " + identifier + " successfully deleted.";
+    }
+    
     
     
 
