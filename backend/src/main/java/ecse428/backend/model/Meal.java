@@ -2,6 +2,7 @@ package ecse428.backend.model;
 
 import java.util.Set;
 
+import ecse428.backend.model.SmartEats.DietaryRestriction;
 import ecse428.backend.model.SmartEats.Ingredient;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -14,6 +15,7 @@ public class Meal {
     private Double rating;
     private Double price;
     private Set<Ingredient> ingredients;
+    private Set<DietaryRestriction> dietaryRestrictions;
     private String imageLink;
 
     @Id
@@ -55,6 +57,14 @@ public class Meal {
 
     public void setIngredients(Set<Ingredient> ingredients) {
         this.ingredients = ingredients;
+    }
+
+    public Set<DietaryRestriction> getDietaryRestrictions() {
+        return this.dietaryRestrictions;
+    }
+
+    public void setDietaryRestrictions(Set<DietaryRestriction> dietaryRestrictions) {
+        this.dietaryRestrictions = dietaryRestrictions;
     }
  
     public String getImageLink() {
