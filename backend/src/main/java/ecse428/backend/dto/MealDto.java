@@ -1,6 +1,7 @@
 package ecse428.backend.dto;
 
 import ecse428.backend.model.Meal;
+import ecse428.backend.model.SmartEats.DietaryRestriction;
 import ecse428.backend.model.SmartEats.Ingredient;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -21,6 +22,8 @@ public class MealDto {
     private Double price;
     
     private Set<Ingredient> ingredients;
+
+    private Set<DietaryRestriction> dietaryRestrictions;
     
     private String imageLink;
 
@@ -74,6 +77,14 @@ public class MealDto {
         this.ingredients = ingredients;
     }
 
+    public Set<DietaryRestriction> getDietaryRestrictions() {
+        return this.dietaryRestrictions;
+    }
+
+    public void setDietaryRestrictions(Set<DietaryRestriction> dietaryRestrictions) {
+        this.dietaryRestrictions = dietaryRestrictions;
+    }
+
     public String getImageLink() {
         return imageLink;
     }
@@ -90,6 +101,7 @@ public class MealDto {
         meal.setRating(this.rating);
         meal.setPrice(this.price);
         meal.setIngredients(this.ingredients);
+        meal.setDietaryRestrictions(this.dietaryRestrictions);
         meal.setImageLink(this.imageLink);
         return meal;
     }

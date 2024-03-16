@@ -49,6 +49,7 @@ public class MealService {
         existingMeal.setRating(mealDto.getRating());
         existingMeal.setPrice(mealDto.getPrice());
         existingMeal.setIngredients(mealDto.getIngredients());
+        existingMeal.setDietaryRestrictions(mealDto.getDietaryRestrictions());
         existingMeal.setImageLink(mealDto.getImageLink());
     
         return mealRepository.save(existingMeal);
