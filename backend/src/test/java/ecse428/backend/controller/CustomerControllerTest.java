@@ -251,5 +251,39 @@ public class CustomerControllerTest {
     }
 
 
+    void deleteUser_ValidUserDto_ReturnsOk() throws Exception {
+        // Arrange
+        CustomerDto customerDto = new CustomerDto("test@example.com", "password");
+        String successMessage = "Customer with email test@example.com successfully deleted.";
+        when(customerService.deleteCustomer(anyString())).thenReturn(successMessage);
+
+        // Act & Assert
+        mockMvc.perform(delete("/customers/delete")
+                        .content(objectMapper.writeValueAsString(customerDto))
+                        .contentType(MediaType.APPLICATION_JSON))
+                        .andExpect(status().isOk())
+                        .andExpect(content().string(successMessage));
+
+
+        verify(customerService, times(1)).deleteCustomer("test@example.com");
+    }
+
+    @Test
+    void deleteUser_EmptyEmail_ReturnsBadRequest() throws Exception {
+        // Arrange
+        CustomerDto customerDto = new CustomerDto("", null); // Empty email
+
+        // Act & Assert
+        mockMvc.perform(delete("/customers/delete")
+                .content(objectMapper.writeValueAsString(customerDto))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Email must not be empty"));
+
+        verify(customerService, never()).deleteCustomer(anyString());
+    }
+
+
+
 
 }

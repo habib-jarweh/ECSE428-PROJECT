@@ -215,6 +215,15 @@ public class CustomerService {
 
         return customerRepository.findAll().stream().map(Customer::convertToDto).collect(Collectors.toList());
     }
+    public String deleteCustomer(String identifier) {
+        Customer customer = customerRepository.findCustomerByEmail(identifier);
+        if (customer == null) {
+            throw new IllegalArgumentException("No customer found with email: " + identifier);
+        }
+        customerRepository.delete(customer);
+        return "Customer with email " + identifier + " successfully deleted.";
+    }
+    
     
     
 
