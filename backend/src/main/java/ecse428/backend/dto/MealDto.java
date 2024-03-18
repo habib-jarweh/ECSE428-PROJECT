@@ -1,26 +1,44 @@
-package ecse428.backend.model;
+package ecse428.backend.dto;
 
-import java.util.Set;
-
+import ecse428.backend.model.Meal;
 import ecse428.backend.model.SmartEats.DietaryRestriction;
 import ecse428.backend.model.SmartEats.Ingredient;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-@Entity
-public class Meal {
-    
+public class MealDto {
+
+    @NotNull
+    @Size(min = 1, message = "Meal name must not be empty.")
     private String mealName;
+    
     private String description;
+    
     private Double rating;
+    
+    @NotNull(message = "Price must not be null.")
     private Double price;
+    
     private Set<Ingredient> ingredients;
+
     private Set<DietaryRestriction> dietaryRestrictions;
+    
     private String imageLink;
 
-    @Id
+    // public MealDto(Meal meal) {
+    //     this.mealName = meal.getMealName();
+    //     this.description = meal.getDescription();
+    //     this.rating = meal.getRating();
+    //     this.price = meal.getPrice();
+    //     this.ingredients = meal.getIngredients();
+    //     this.imageLink = meal.getImageLink();
+    // }
+
+    // Getters and Setters
     public String getMealName() {
-        return this.mealName;
+        return mealName;
     }
 
     public void setMealName(String mealName) {
@@ -28,7 +46,7 @@ public class Meal {
     }
 
     public String getDescription() {
-        return this.description;
+        return description;
     }
 
     public void setDescription(String description) {
@@ -36,7 +54,7 @@ public class Meal {
     }
 
     public Double getRating() {
-        return this.rating;
+        return rating;
     }
 
     public void setRating(Double rating) {
@@ -44,7 +62,7 @@ public class Meal {
     }
 
     public Double getPrice() {
-        return this.price;
+        return price;
     }
 
     public void setPrice(Double price) {
@@ -52,7 +70,7 @@ public class Meal {
     }
 
     public Set<Ingredient> getIngredients() {
-        return this.ingredients;
+        return ingredients;
     }
 
     public void setIngredients(Set<Ingredient> ingredients) {
@@ -66,12 +84,26 @@ public class Meal {
     public void setDietaryRestrictions(Set<DietaryRestriction> dietaryRestrictions) {
         this.dietaryRestrictions = dietaryRestrictions;
     }
- 
+
     public String getImageLink() {
-        return this.imageLink;
+        return imageLink;
     }
 
     public void setImageLink(String imageLink) {
         this.imageLink = imageLink;
     }
+
+    // Convert to Entity
+    public Meal convertToEntity() {
+        Meal meal = new Meal();
+        meal.setMealName(this.mealName);
+        meal.setDescription(this.description);
+        meal.setRating(this.rating);
+        meal.setPrice(this.price);
+        meal.setIngredients(this.ingredients);
+        meal.setDietaryRestrictions(this.dietaryRestrictions);
+        meal.setImageLink(this.imageLink);
+        return meal;
+    }
 }
+
