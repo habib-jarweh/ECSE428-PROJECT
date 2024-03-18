@@ -229,7 +229,7 @@ public class CustomerService {
 
         Customer customer = customerRepository.findCustomerByEmail(email);
 
-        return customer.convertToDto();
+        return new CustomerDto(customer.getEmail(),customer.getName(),customer.getAddress(),customer.getBillingAddress(),customer.getPhoneNumber(),customer.getPfpImageLink());
     }
 
     public CustomerDto editUserInfo(CustomerDto customerDto) {
