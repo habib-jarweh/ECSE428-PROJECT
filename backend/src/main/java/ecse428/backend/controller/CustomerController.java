@@ -169,7 +169,7 @@ public class CustomerController {
     }
 
     @GetMapping("/userInfo")
-    public ResponseEntity<?>getUserInfo(@Valid @RequestParam String email, BindingResult result){
+    public ResponseEntity<?>getUserInfo(@Valid @RequestBody CustomerDto customerDto, BindingResult result){
         if (result.hasErrors()) {
             String errors = result.getAllErrors().stream()
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
@@ -177,7 +177,7 @@ public class CustomerController {
             return ResponseEntity.badRequest().body(errors);
         }
         try{
-             return ResponseEntity.ok(customerService.getUserInfo(email));
+             return ResponseEntity.ok(customerService.getUserInfo(customerDto.getEmail()));
         }catch(IllegalArgumentException ex){
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
