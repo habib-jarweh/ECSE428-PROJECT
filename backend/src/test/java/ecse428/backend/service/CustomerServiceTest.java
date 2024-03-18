@@ -20,6 +20,7 @@ import static org.mockito.Mockito.*;
 import java.time.LocalDate;
 import java.util.EnumSet;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -315,8 +316,17 @@ public class CustomerServiceTest {
         verify(customerRepository, times(1)).save(any(Customer.class));
     }
 
+    @Test
+    public void testGetAllCustomers() {
+        // Mocking behavior
+        when(customerRepository.findAll()).thenReturn(null);
 
+        // Call the method under test
+        List<CustomerDto> result = customerService.getAllCustomers();
 
+        // Verify the result
+        assertNull(result);
+    }
 
 
 }

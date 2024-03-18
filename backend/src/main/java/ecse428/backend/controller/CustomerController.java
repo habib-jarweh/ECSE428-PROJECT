@@ -143,5 +143,13 @@ public class CustomerController {
         }
     }
 
+    @GetMapping("/view_all")
+    public ResponseEntity<?> viewAllCustomers() {
+        try {
+            return ResponseEntity.ok(customerService.getAllCustomers());
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
 
 }

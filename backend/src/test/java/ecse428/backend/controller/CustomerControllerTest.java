@@ -2,6 +2,7 @@ package ecse428.backend.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ecse428.backend.dto.CustomerDto;
+import ecse428.backend.model.Customer;
 import ecse428.backend.model.SmartEats.DietaryRestriction;
 import ecse428.backend.service.CustomerService;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,6 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 @ExtendWith(SpringExtension.class)
 public class CustomerControllerTest {
@@ -232,6 +234,22 @@ public class CustomerControllerTest {
 
                 verify(customerService, times(0)).checkCustomerCredentials(any(CustomerDto.class));
     }
+
+    @Test
+    void get_all_customers() throws Exception {
+        // Arrange
+        List<CustomerDto> customers = Arrays.asList(new CustomerDto("test@me.com", "password"));
+        when(customerService.getAllCustomers()).thenReturn(customers);
+
+        // Act & Assert
+        mockMvc.perform(get("/customers/view_all"))
+                .andExpect(status().isOk())
+                .andExpect(content().json("[{\"email\":\"test@me.com\", \"password\":\"password\"}]"));
+
+        verify(customerService, times(1)).getAllCustomers();
+
+    }
+
 
 
 }
