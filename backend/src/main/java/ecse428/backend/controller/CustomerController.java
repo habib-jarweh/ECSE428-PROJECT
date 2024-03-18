@@ -154,13 +154,6 @@ public class CustomerController {
 
     @DeleteMapping("/delete")
     public ResponseEntity<?> deleteUser(@RequestBody CustomerDto customerDto, BindingResult result) {
-        if (result.hasErrors()) {
-            String errors = result.getAllErrors().stream()
-                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                    .collect(Collectors.joining(", "));
-            return ResponseEntity.badRequest().body(errors);
-        }
-
         String email = customerDto.getEmail();
         try {
             if (email == null || email.trim().isEmpty()) {
@@ -175,6 +168,35 @@ public class CustomerController {
         }
     }
 
+    @GetMapping("/userInfo")
+    public ResponseEntity<?>getUserInfo(@Valid @RequestParam String email, BindingResult result){
+        if (result.hasErrors()) {
+            String errors = result.getAllErrors().stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .collect(Collectors.joining(", "));
+            return ResponseEntity.badRequest().body(errors);
+        }
+        try{
+             return ResponseEntity.ok(customerService.getUserInfo(email));
+        }catch(IllegalArgumentException ex){
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
+
+    @PostMapping("/userInfo")
+    public ResponseEntity<?>editUserInfo(@Valid @RequestBody CustomerDto customerDto, BindingResult result){
+        if (result.hasErrors()) {
+            String errors = result.getAllErrors().stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .collect(Collectors.joining(", "));
+            return ResponseEntity.badRequest().body(errors);
+        }
+        try{
+             return ResponseEntity.ok(customerService.editUserInfo(customerDto));
+        }catch(IllegalArgumentException ex){
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
 
 
 }
