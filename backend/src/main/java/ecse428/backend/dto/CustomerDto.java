@@ -16,6 +16,10 @@ public class CustomerDto {
     private String email;
     private String name;
     private String password;
+    private String address;
+    private String billingAddress;
+    private String phoneNumber;
+    private String pfpImageLink;
 
     private Set<SmartEats.DietaryRestriction> dietaryRestrictions;
     private Double weightGoal;
@@ -35,6 +39,16 @@ public class CustomerDto {
         this.dietaryRestrictions = dietaryRestrictions;
         this.weightGoal = weightGoal;
         this.weightHistory = weightHistory;
+    }
+
+    public CustomerDto(String email, String name, String address, String billingAddress, String phoneNumber, String pfpImageLink) {
+        this.email = email;
+        this.password = null;
+        this.name = name;
+        this.address = address;
+        this.billingAddress = billingAddress;
+        this.phoneNumber = phoneNumber;
+        this.pfpImageLink = pfpImageLink; 
     }
 
     public String getEmail() {
@@ -83,6 +97,39 @@ public class CustomerDto {
 
     public void setWeightHistory(Set<WeightDate> weightHistory) {
         this.weightHistory = weightHistory;
+    }
+
+    
+    public String getAddress() {
+        return this.address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getBillingAddress() {
+        return this.billingAddress;
+    }
+
+    public void setBillingAddress(String billingAddress) {
+        this.billingAddress = billingAddress;
+    }
+
+    public String getPhoneNumber() {
+        return this.phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getPfpImageLink() {
+        return this.pfpImageLink;
+    }
+
+    public void setPfpImageLink(String pfpImageLink) {
+        this.pfpImageLink = pfpImageLink;
     }
 
     public Customer convertToEntity() {
