@@ -225,6 +225,41 @@ public class CustomerService {
     }
     
     
+    public CustomerDto getUserInfo(String email) {
+
+        Customer customer = customerRepository.findCustomerByEmail(email);
+
+        return new CustomerDto(customer.getEmail(),customer.getName(),customer.getAddress(),customer.getBillingAddress(),customer.getPhoneNumber(),customer.getPfpImageLink());
+    }
+
+    public CustomerDto editUserInfo(CustomerDto customerDto) {
+        
+        Customer customer = customerRepository.findCustomerByEmail(customerDto.getEmail());
+
+        if(customerDto.getAddress() != null){
+            customer.setAddress(customerDto.getAddress());
+        }
+
+        if(customerDto.getBillingAddress()!= null){
+            customer.setBillingAddress(customerDto.getBillingAddress());
+        }
+
+        if(customerDto.getPhoneNumber() != null){
+            customer.setPhoneNumber(customerDto.getPhoneNumber());
+        }
+
+        if(customerDto.getName() != null){
+            customer.setName(customerDto.getName());
+        }
+
+        if(customerDto.getPfpImageLink() != null){
+            customer.setPfpImageLink(customerDto.getPfpImageLink());
+        }
+
+        customerRepository.save(customer);
+
+        return new CustomerDto(customer.getEmail(),customer.getName(),customer.getAddress(),customer.getBillingAddress(),customer.getPhoneNumber(),customer.getPfpImageLink());
+    }
     
 
 }

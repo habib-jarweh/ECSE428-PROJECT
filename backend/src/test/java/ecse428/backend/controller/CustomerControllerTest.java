@@ -59,8 +59,8 @@ public class CustomerControllerTest {
 
         // Act & Assert
         mockMvc.perform(post("/customers/register")
-                        .content(objectMapper.writeValueAsString(customerDto))
-                        .contentType(MediaType.APPLICATION_JSON))
+                .content(objectMapper.writeValueAsString(customerDto))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
         verify(customerService, times(1)).registerCustomer(any(CustomerDto.class));
@@ -74,8 +74,8 @@ public class CustomerControllerTest {
 
         // Act & Assert
         mockMvc.perform(post("/customers/register")
-                        .content(objectMapper.writeValueAsString(customerDto))
-                        .contentType(MediaType.APPLICATION_JSON))
+                .content(objectMapper.writeValueAsString(customerDto))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
 
         verify(customerService, times(0)).registerCustomer(any(CustomerDto.class));
@@ -89,8 +89,8 @@ public class CustomerControllerTest {
 
         // Act & Assert
         mockMvc.perform(post("/customers/login")
-                        .content(objectMapper.writeValueAsString(customerDto))
-                        .contentType(MediaType.APPLICATION_JSON))
+                .content(objectMapper.writeValueAsString(customerDto))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
         verify(customerService, times(1)).checkCustomerCredentials(any(CustomerDto.class));
@@ -104,26 +104,27 @@ public class CustomerControllerTest {
 
         // Act & Assert
         mockMvc.perform(post("/customers/login")
-                        .content(objectMapper.writeValueAsString(customerDto))
-                        .contentType(MediaType.APPLICATION_JSON))
+                .content(objectMapper.writeValueAsString(customerDto))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
 
         verify(customerService, times(0)).checkCustomerCredentials(any(CustomerDto.class));
     }
 
-        @Test
+    @Test
     void updateDietaryRestrictions_ValidDto_ReturnsOk() throws Exception {
         // Arrange
         CustomerDto customerDto = new CustomerDto();
         customerDto.setEmail("test@example.com");
-        customerDto.setDietaryRestrictions(new HashSet<>(Arrays.asList(DietaryRestriction.GLUTEN, DietaryRestriction.VEGAN)));
+        customerDto.setDietaryRestrictions(
+                new HashSet<>(Arrays.asList(DietaryRestriction.GLUTEN, DietaryRestriction.VEGAN)));
 
         when(customerService.setDietaryRestriction(eq("test@example.com"), any(String[].class))).thenReturn(true);
 
         // Act & Assert
         mockMvc.perform(post("/customers/dietary-restrictions")
-                        .content(objectMapper.writeValueAsString(customerDto))
-                        .contentType(MediaType.APPLICATION_JSON))
+                .content(objectMapper.writeValueAsString(customerDto))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
         verify(customerService, times(1)).setDietaryRestriction(eq("test@example.com"), any(String[].class));
@@ -134,14 +135,15 @@ public class CustomerControllerTest {
         // Arrange
         CustomerDto customerDto = new CustomerDto();
         customerDto.setEmail("test@example.com");
-        customerDto.setDietaryRestrictions(new HashSet<>(Arrays.asList(DietaryRestriction.GLUTEN, DietaryRestriction.VEGAN)));
+        customerDto.setDietaryRestrictions(
+                new HashSet<>(Arrays.asList(DietaryRestriction.GLUTEN, DietaryRestriction.VEGAN)));
 
         when(customerService.setDietaryRestriction(eq("test@example.com"), any(String[].class))).thenReturn(false);
 
         // Act & Assert
         mockMvc.perform(post("/customers/dietary-restrictions")
-                        .content(objectMapper.writeValueAsString(customerDto))
-                        .contentType(MediaType.APPLICATION_JSON))
+                .content(objectMapper.writeValueAsString(customerDto))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isInternalServerError());
 
         verify(customerService, times(1)).setDietaryRestriction(eq("test@example.com"), any(String[].class));
@@ -154,8 +156,8 @@ public class CustomerControllerTest {
 
         // Act & Assert
         mockMvc.perform(post("/customers/dietary-restrictions")
-                        .content(invalidDtoJson)
-                        .contentType(MediaType.APPLICATION_JSON))
+                .content(invalidDtoJson)
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
 
         verify(customerService, times(0)).setDietaryRestriction(anyString(), any(String[].class));
@@ -168,8 +170,8 @@ public class CustomerControllerTest {
 
         // Act & Assert
         mockMvc.perform(post("/customers/dietary-restrictions")
-                        .content(invalidDtoJson)
-                        .contentType(MediaType.APPLICATION_JSON))
+                .content(invalidDtoJson)
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
 
         verify(customerService, times(0)).setDietaryRestriction(anyString(), any(String[].class));
@@ -185,13 +187,14 @@ public class CustomerControllerTest {
 
         // Act & Assert
         mockMvc.perform(post("/customers/weightGoal")
-                        .param("weightGoal", String.valueOf(newWeightGoal))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(customerDto)))
+                .param("weightGoal", String.valueOf(newWeightGoal))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(customerDto)))
                 .andExpect(status().isOk());
 
         verify(customerService, times(1)).addUpdateWeightGoal(any(CustomerDto.class), eq(newWeightGoal));
     }
+
     @Test
     void updateWeightGoal_InvalidRequest_ReturnsBadRequest() throws Exception {
         // Arrange
@@ -200,39 +203,38 @@ public class CustomerControllerTest {
 
         // Act & Assert
         mockMvc.perform(post("/customers/weightGoal")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(customerDto)))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(customerDto)))
                 .andExpect(status().isBadRequest());
 
         // Verify that the service method is never called due to invalid request
         verify(customerService, times(0)).addUpdateWeightGoal(any(CustomerDto.class), anyDouble());
     }
 
-
     @Test
     void updateUserWeightHistory_ValidUser_ReturnsOk() throws Exception {
-                // Arrange
-                CustomerDto customerDto = new CustomerDto("test@example.com", "password");
+        // Arrange
+        CustomerDto customerDto = new CustomerDto("test@example.com", "password");
 
-                // Act & Assert
-                mockMvc.perform(post("/customers/weightHistory")
-                                .content(objectMapper.writeValueAsString(customerDto))
-                                .param("weight", "101.1")
-                                .contentType(MediaType.APPLICATION_JSON))
-                        .andExpect(status().isOk());
+        // Act & Assert
+        mockMvc.perform(post("/customers/weightHistory")
+                .content(objectMapper.writeValueAsString(customerDto))
+                .param("weight", "101.1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
 
-                verify(customerService, times(1)).addUpdateWeightHistory(any(CustomerDto.class), any(Double.class));
+        verify(customerService, times(1)).addUpdateWeightHistory(any(CustomerDto.class), any(Double.class));
     }
 
     @Test
     void updateUserWeightHistory_InvalidUser_ReturnsBadRequest() throws Exception {
 
-                // Act & Assert
-                mockMvc.perform(post("/customers/weightHistory")
-                                .contentType(MediaType.APPLICATION_JSON))
-                        .andExpect(status().isBadRequest());
+        // Act & Assert
+        mockMvc.perform(post("/customers/weightHistory")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
 
-                verify(customerService, times(0)).checkCustomerCredentials(any(CustomerDto.class));
+        verify(customerService, times(0)).checkCustomerCredentials(any(CustomerDto.class));
     }
 
     @Test
@@ -285,5 +287,31 @@ public class CustomerControllerTest {
 
 
 
+    void getUserInfo_ValidEmail_ReturnsOk() throws Exception {
+        // Arrange
+        CustomerDto customerDto = new CustomerDto("test@example.com", null);
+
+        // Act & Assert
+        mockMvc.perform(get("/customers/userInfo")
+                .content(objectMapper.writeValueAsString(customerDto))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        verify(customerService, times(1)).getUserInfo(any(String.class));
+    }
+
+    @Test
+    void getUserInfo_InvalidEmail_ReturnsBadRequest() throws Exception {
+        // Arrange
+        String invalidEmail = "notavalidemail";
+
+        // Act & Assert
+        mockMvc.perform(get("/customers/userInfo")
+                .param("email", invalidEmail)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+
+        verify(customerService, times(0)).getUserInfo(invalidEmail);
+    }
 
 }
