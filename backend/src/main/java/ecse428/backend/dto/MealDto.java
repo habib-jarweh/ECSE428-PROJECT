@@ -27,14 +27,20 @@ public class MealDto {
     
     private String imageLink;
 
-    // public MealDto(Meal meal) {
-    //     this.mealName = meal.getMealName();
-    //     this.description = meal.getDescription();
-    //     this.rating = meal.getRating();
-    //     this.price = meal.getPrice();
-    //     this.ingredients = meal.getIngredients();
-    //     this.imageLink = meal.getImageLink();
-    // }
+    private Integer stockQuantity;
+
+    public MealDto() {
+    }
+
+    public MealDto(Meal meal) {
+        this.mealName = meal.getMealName();
+        this.description = meal.getDescription();
+        this.rating = meal.getRating();
+        this.price = meal.getPrice();
+        this.ingredients = meal.getIngredients();
+        this.imageLink = meal.getImageLink();
+        this.stockQuantity = meal.getStockQuantity();
+    }
 
     // Getters and Setters
     public String getMealName() {
@@ -103,7 +109,16 @@ public class MealDto {
         meal.setIngredients(this.ingredients);
         meal.setDietaryRestrictions(this.dietaryRestrictions);
         meal.setImageLink(this.imageLink);
+        meal.setStockQuantity(this.stockQuantity);
         return meal;
+    }
+
+    public Integer getStockQuantity() {
+        return this.stockQuantity;
+    }
+
+    public void setStockQuantity(Integer stockQuantity) {
+        this.stockQuantity = stockQuantity;
     }
 }
 

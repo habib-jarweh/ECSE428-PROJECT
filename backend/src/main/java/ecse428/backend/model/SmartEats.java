@@ -24,10 +24,6 @@ public class SmartEats {
     private Set<Admin> admins;
     private Set<Order> orders;
     private Set<Meal> meals;
-    private Set<MealItem> mealItems;
-
-
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -83,15 +79,5 @@ public class SmartEats {
     public void setMeals(Set<Meal> meals) {
         this.meals = meals;
     }
-
-    @OneToMany(cascade = {CascadeType.ALL})
-    public Set<MealItem> getMealItems() {
-        return this.mealItems;
-    }
-
-    public void setMealItems(Set<MealItem> mealItems) {
-        this.mealItems = mealItems;
-    }
-
 
 }

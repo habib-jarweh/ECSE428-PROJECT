@@ -2,6 +2,8 @@ package ecse428.backend.model;
 
 import java.util.Set;
 
+import ecse428.backend.dto.CustomerDto;
+import ecse428.backend.dto.MealDto;
 import ecse428.backend.model.SmartEats.DietaryRestriction;
 import ecse428.backend.model.SmartEats.Ingredient;
 import jakarta.persistence.Entity;
@@ -17,6 +19,7 @@ public class Meal {
     private Set<Ingredient> ingredients;
     private Set<DietaryRestriction> dietaryRestrictions;
     private String imageLink;
+    private Integer stockQuantity;
 
     @Id
     public String getMealName() {
@@ -73,5 +76,17 @@ public class Meal {
 
     public void setImageLink(String imageLink) {
         this.imageLink = imageLink;
+    }
+
+    public MealDto convertToDto() {
+        return new MealDto(this);
+    }
+
+    public Integer getStockQuantity() {
+        return this.stockQuantity;
+    }
+
+    public void setStockQuantity(Integer stockQuantity) {
+        this.stockQuantity = stockQuantity;
     }
 }
