@@ -16,9 +16,9 @@ import java.util.Optional;
 @Service
 public class ReviewService {
 
-    private ReviewRepository reviewRepository;
-    private MealRepository mealRepository;
-    private OrderRepository orderRepository;
+    private final ReviewRepository reviewRepository;
+    private final MealRepository mealRepository;
+    private final OrderRepository orderRepository;
 
     @Autowired
     public ReviewService(ReviewRepository reviewRepository, MealRepository mealRepository, OrderRepository orderRepository) {
