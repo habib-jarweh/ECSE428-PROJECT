@@ -1,8 +1,7 @@
 package ecse428.backend.model;
 
+import ecse428.backend.dto.ReviewDto;
 import jakarta.persistence.*;
-
-import java.util.Set;
 
 
 @Entity
@@ -11,7 +10,6 @@ public class Review {
 
     private Long reviewID;
     private Order order;
-    private Customer customer;
     private Meal meal;
 
     private String reviewText;
@@ -20,9 +18,8 @@ public class Review {
 
     protected Review() {}
 
-    public Review(Order order, Customer customer, Meal meal, String reviewText, Integer rating) {
+    public Review(Order order, Meal meal, String reviewText, Integer rating) {
         this.order = order;
-        this.customer = customer;
         this.meal = meal;
         this.reviewText = reviewText;
         this.rating = rating;
@@ -36,15 +33,6 @@ public class Review {
 
     public void setReviewID(Long reviewID) {
         this.reviewID = reviewID;
-    }
-
-    @ManyToOne(optional = false)
-    public Customer getCustomer() {
-        return this.customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
     }
 
     @ManyToOne(optional = false)
@@ -79,5 +67,14 @@ public class Review {
 
     public void setRating(Integer rating) {
         this.rating = rating;
+    }
+
+    public ReviewDto convertToDto() {
+        return new ReviewDto(
+                this.getReviewID(),
+                this.getOrder().getOrderID(),
+                this.getMeal().getMealName(),
+                this.getReviewText(),
+                this.getRating());
     }
 }
