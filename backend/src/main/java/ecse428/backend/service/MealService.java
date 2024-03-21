@@ -7,7 +7,10 @@ import ecse428.backend.dto.MealDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-import java.util.Set;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
 import ecse428.backend.model.SmartEats.Ingredient;
 
 @Service
@@ -51,8 +54,19 @@ public class MealService {
         existingMeal.setIngredients(mealDto.getIngredients());
         existingMeal.setDietaryRestrictions(mealDto.getDietaryRestrictions());
         existingMeal.setImageLink(mealDto.getImageLink());
+        existingMeal.setStockQuantity(mealDto.getStockQuantity());
     
         return mealRepository.save(existingMeal);
+    }
+
+        public List<MealDto> getAllMeals() {
+
+        //Return null if no customers
+        if(mealRepository.findAll() == null || mealRepository.findAll().isEmpty()){
+            return null;
+        }
+
+        return mealRepository.findAll().stream().map(Meal::convertToDto).collect(Collectors.toList());
     }
     
 }

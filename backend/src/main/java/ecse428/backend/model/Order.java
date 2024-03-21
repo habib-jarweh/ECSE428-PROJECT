@@ -1,8 +1,7 @@
 package ecse428.backend.model;
 
+import java.util.List;
 import java.util.Set;
-
-import org.hibernate.engine.internal.Cascade;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -20,7 +19,7 @@ public class Order {
     private Long orderID;
     private Double total;
     private Customer customer;
-    private Set<MealItem> mealItems;
+    private List<String> meals;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -49,13 +48,12 @@ public class Order {
         this.customer = customer;
     }
 
-    @OneToMany(cascade = {CascadeType.ALL})
-    public Set<MealItem> getMealItems() {
-        return this.mealItems;
+    public List<String> getMeals() {
+        return this.meals;
     }
 
-    public void setMealItems(Set<MealItem> mealItems) {
-        this.mealItems = mealItems;
+    public void setMeals(List<String> meals) {
+        this.meals = meals;
     }
 
 
