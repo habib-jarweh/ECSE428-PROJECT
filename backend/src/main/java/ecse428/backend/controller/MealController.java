@@ -74,5 +74,14 @@ public class MealController {
         }
     }
 
+    @GetMapping("/view_all")
+    public ResponseEntity<?> viewAllMeals() {
+        try {
+            return ResponseEntity.ok(mealService.getAllMeals());
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
+
 }
 
