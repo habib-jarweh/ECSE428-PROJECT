@@ -183,6 +183,15 @@ public class CustomerController {
         }
     }
 
+    @GetMapping("/userInfo/{email}")
+    public ResponseEntity<?> getUserInfo(@PathVariable String email) {
+        try {
+            return ResponseEntity.ok(customerService.getUserInfo(email));
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
+
     @PostMapping("/userInfo")
     public ResponseEntity<?>editUserInfo(@Valid @RequestBody CustomerDto customerDto, BindingResult result){
         if (result.hasErrors()) {
