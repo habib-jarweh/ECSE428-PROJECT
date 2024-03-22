@@ -43,7 +43,7 @@ public class ReviewService {
         }
 
         // Check if the meal in each mealItem is in the order
-        if(order.getMealItems().stream().noneMatch(mealItem -> mealItem.getMeal().equals(meal))){
+        if(order.getMeals().stream().noneMatch(orderItem -> orderItem.equals(mealName))){
             throw new IllegalArgumentException("Meal with name " + mealName + " is not in the order.");
         }
 
