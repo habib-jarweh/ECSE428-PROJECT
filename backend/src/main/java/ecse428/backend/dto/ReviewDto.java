@@ -4,7 +4,6 @@ import jakarta.validation.constraints.NotNull;
 
 public class ReviewDto {
 
-    @NotNull
     private Long reviewID;
 
     @NotNull

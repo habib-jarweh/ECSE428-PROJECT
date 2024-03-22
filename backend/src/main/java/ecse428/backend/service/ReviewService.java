@@ -42,6 +42,10 @@ public class ReviewService {
             throw new IllegalArgumentException("Meal with name " + mealName + " does not exist.");
         }
 
+        if(order.getMeals() == null){
+            throw new IllegalArgumentException("Order with id " + OrderID + " does not have any meals.");
+        }
+
         // Check if the meal in each mealItem is in the order
         if(order.getMeals().stream().noneMatch(orderItem -> orderItem.equals(mealName))){
             throw new IllegalArgumentException("Meal with name " + mealName + " is not in the order.");
