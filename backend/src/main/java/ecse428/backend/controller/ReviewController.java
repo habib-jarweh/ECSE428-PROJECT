@@ -54,7 +54,7 @@ public class ReviewController {
     }
 
     @GetMapping("/getByMeal")
-    public ResponseEntity<?> getReviewByMeal(@RequestParam String mealName) {
+    public ResponseEntity<?> getReviewsByMeal(@RequestParam String mealName) {
         try {
             return ResponseEntity.ok(reviewService.getReviewsByMealName(mealName));
         } catch (IllegalArgumentException ex) {
