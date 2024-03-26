@@ -3,6 +3,7 @@ package ecse428.backend.model;
 import java.util.List;
 import java.util.Set;
 
+import ecse428.backend.dto.OrderDto;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -54,6 +55,14 @@ public class Order {
 
     public void setMeals(List<String> meals) {
         this.meals = meals;
+    }
+
+    public OrderDto convertToDto() {
+        OrderDto order = new OrderDto();
+        order.setTotal(this.total);
+        order.setCustomerEmail(this.customer.getEmail());
+        order.setMealNames(this.meals);
+        return order;
     }
 
 

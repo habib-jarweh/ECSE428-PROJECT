@@ -2,6 +2,7 @@ package ecse428.backend.controller;
 
 import ecse428.backend.dto.MealDto;
 import ecse428.backend.model.Meal;
+import ecse428.backend.model.SmartEats;
 import ecse428.backend.service.MealService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
@@ -78,6 +80,15 @@ public class MealController {
     public ResponseEntity<?> viewAllMeals() {
         try {
             return ResponseEntity.ok(mealService.getAllMeals());
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
+
+    @GetMapping("/view_filter_by_dietary_restrictions")
+    public ResponseEntity<?> viewMealsByDietaryRestrictions(@RequestBody List<SmartEats.DietaryRestriction> dietaryRestrictions) {
+        try {
+            return ResponseEntity.ok(mealService.getMealsByDietaryRestrictions(dietaryRestrictions));
         } catch (IllegalArgumentException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
