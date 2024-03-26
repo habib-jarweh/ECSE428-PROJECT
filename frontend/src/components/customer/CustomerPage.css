@@ -1,0 +1,57 @@
+.customer-container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    background-color: #006400; /* Dark green for consistency */
+    border-radius: 5px;
+    color: white; /* Text color */
+    font-family: 'Calibri', Arial, Helvetica, sans-serif;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+h1, h2 {
+    text-align: center;
+}
+
+.user-info, .meals {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #004225; /* Slightly darker green for sections */
+    border-radius: 4px;
+}
+
+p {
+    line-height: 1.6; /* Makes text easier to read */
+}
+
+.meal {
+    margin-top: 15px;
+    padding: 15px;
+    background-color: #005435; /* Different green for each meal */
+    border-radius: 4px;
+    margin-bottom: 20px; /* Space between meals */
+}
+
+.meal img {
+    width: 100px; /* Adjust based on your needs */
+    height: 100px; /* Adjust based on your needs */
+    border-radius: 50%; /* Circular images */
+    display: block;
+    margin: 10px auto; /* Center image */
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: block;
+    width: fit-content;
+    margin: 20px auto; /* Center button */
+}
+
+button:hover {
+    background-color: #0056b3;
+}
