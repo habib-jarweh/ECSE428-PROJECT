@@ -12,7 +12,9 @@ import ecse428.backend.model.Order;
 import ecse428.backend.dto.OrderDto;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
@@ -60,4 +62,15 @@ public class OrderService {
     }
     
     // Assume other parts of the class remain unchanged
+    public List<OrderDto> viewAllOrders() {
+        return orderRepository.findAll().stream()
+                .map(Order::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<OrderDto> viewOrdersByCustomer(String customerEmail) {
+        return orderRepository.findOrdersByCustomerEmail(customerEmail).stream()
+                .map(Order::convertToDto)
+                .collect(Collectors.toList());
+    }
 }

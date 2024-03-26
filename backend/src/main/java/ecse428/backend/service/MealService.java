@@ -4,14 +4,16 @@ import ecse428.backend.model.Meal;
 import ecse428.backend.dao.MealRepository;
 import ecse428.backend.dto.MealDto;
 
+import ecse428.backend.model.SmartEats;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
-import ecse428.backend.model.SmartEats.Ingredient;
 
 @Service
 public class MealService {
@@ -30,6 +32,10 @@ public class MealService {
         Meal existingMeal = mealRepository.findMealByMealName(meal.getMealName());
         if (existingMeal != null) {
             throw new IllegalArgumentException("A meal with this name already exists.");
+        }
+        if(meal.getDietaryRestrictions() == null){
+            Set<SmartEats.DietaryRestriction> emptyList = Set.of();
+            meal.setDietaryRestrictions(emptyList);
         }
 
         try {
@@ -59,7 +65,7 @@ public class MealService {
         return mealRepository.save(existingMeal);
     }
 
-        public List<MealDto> getAllMeals() {
+    public List<MealDto> getAllMeals() {
 
         //Return null if no customers
         if(mealRepository.findAll() == null || mealRepository.findAll().isEmpty()){
@@ -67,6 +73,18 @@ public class MealService {
         }
 
         return mealRepository.findAll().stream().map(Meal::convertToDto).collect(Collectors.toList());
+    }
+
+    public List<MealDto> getMealsByDietaryRestrictions(List<SmartEats.DietaryRestriction> dietaryRestrictions) {
+        List<MealDto> allMeals = getAllMeals();
+
+        if (allMeals == null) {
+            return null;
+        }
+
+        return allMeals.stream()
+            .filter(meal -> meal.getDietaryRestrictions().containsAll(dietaryRestrictions))
+            .collect(Collectors.toList());
     }
     
 }
