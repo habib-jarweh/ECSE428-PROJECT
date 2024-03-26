@@ -42,5 +42,23 @@ public class OrderController {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
     }
+
+    @GetMapping("/get_all")
+    public ResponseEntity<?> getAllOrders() {
+        try{
+            return ResponseEntity.ok(orderService.viewAllOrders());
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
+
+    @GetMapping("/get_by_customer_email")
+    public ResponseEntity<?> getOrdersByCustomerEmail(@RequestParam String customerEmail) {
+        try{
+            return ResponseEntity.ok(orderService.viewOrdersByCustomer(customerEmail));
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
     
 }
