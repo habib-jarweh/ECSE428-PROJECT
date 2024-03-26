@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import './CustomerPage.css';
+
 
 function CustomerPage() {
   const [meals, setMeals] = useState([]);

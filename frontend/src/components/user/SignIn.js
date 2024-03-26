@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
+import './SignIn.css'; // Adjust the path if necessary
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import logo from './logo.png';
 
 function SignIn() {
   const [email, setEmail] = useState('');
@@ -38,46 +41,22 @@ function SignIn() {
   };
 
   return (
-    <div style={styles.container}>
+    <div className="container">
+      <img src={logo} alt="SmartEats Logo" className="logo" /> {/* Logo added here */}
       <h2>Sign In to SmartEats</h2>
-      <form onSubmit={handleSubmit} style={styles.form}>
-        <div style={styles.inputGroup}>
+      <form onSubmit={handleSubmit} className="form-container">
+        <div className="inputGroup">
           <label>Email</label>
           <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
         </div>
-        <div style={styles.inputGroup}>
+        <div className="inputGroup">
           <label>Password</label>
           <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
         </div>
-        <button type="submit" style={styles.submitButton}>Sign In</button>
+        <button type="submit">Sign In</button>
+        <p className="SignUpLink">Don't have an account? <Link to="/signup">Sign Up</Link></p>
       </form>
     </div>
-  );
+  );  
 }
-
-const styles = {
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '100vh',
-  },
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '300px',
-  },
-  inputGroup: {
-    marginBottom: '15px',
-  },
-  submitButton: {
-    padding: '10px',
-    backgroundColor: '#4CAF50',
-    color: 'white',
-    border: 'none',
-    cursor: 'pointer',
-  }
-};
-
 export default SignIn;
