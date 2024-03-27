@@ -37,6 +37,7 @@ function CustomerPage() {
       }
       const data = await response.json();
       setMeals(data);
+      console.log(data);
     } catch (error) {
       console.error('Error fetching meals:', error);
     }
@@ -67,9 +68,9 @@ function CustomerPage() {
               <p>Description: {meal.description || "Not provided"}</p>
               <p>Rating: {meal.rating || "Not rated"}</p>
               <p>Price: ${meal.price}</p>
-              <p>Ingredients: {meal.ingredients.join(", ") || "Not provided"}</p>
+              <p>Ingredients: {meal.ingredients?.length > 0 ? meal.ingredients?.join(", ") :  "Not provided"}</p>
               <p>Dietary Restrictions: {meal.dietaryRestrictions?.join(", ") || "None"}</p>
-              <p>Stock Quantity: {meal.stockQuantity}</p>
+              <p>Stock Quantity: {meal.stockQuantity || "Not provided" }</p>
               {meal.imageLink && <img src={meal.imageLink} alt={meal.mealName} style={{width: '100px', height: '100px'}} />}
             </div>
           ))}
