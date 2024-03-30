@@ -102,9 +102,9 @@ function AdminPage() {
         Welcome, Admin!
       </h1>
       <div style={styles.navigation}>
-        <button style={styles.button} onClick={() => setCurrentView('customers')}>Show Customers</button>
-        <button style={styles.button} onClick={() => setCurrentView('meals')}>Show Meals</button>
-        <button style={styles.button} onClick={() => setCurrentView('createMeal')}>Create Meal</button>
+        <button style={{...styles.button, marginRight: '20px'}} onClick={() => setCurrentView('customers')}>Show Customers</button>
+        <button style={{...styles.button, marginRight: '20px'}} onClick={() => setCurrentView('meals')}>Show Meals</button>
+        <button style={{...styles.button, marginRight: '20px'}} onClick={() => setCurrentView('createMeal')}>Create Meal</button>
       </div>
       {currentView === 'customers' && (
         <div style={styles.content}>
@@ -230,24 +230,18 @@ function AdminPage() {
 }
 
 const styles = {
-  welcomeMessage: {
-    textAlign: 'center',
-    fontSize: '24px',
-    color: '#333',
-    margin: '20px 0',
-  },
   adminPageLayout: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     marginTop: '20px',
+    width: '100%', // Ensure full width to center content properly
   },
   navigation: {
-    marginBottom: '20px',
-  },
-  content: {
-    width: '80%',
-    textAlign: 'center',
+    display: 'flex', // Use flexbox for alignment
+    justifyContent: 'space-around', // Space out buttons evenly
+    width: '60%', // Adjust based on preference
+    marginBottom: '40px', // Increase space below the button group
   },
   button: {
     cursor: 'pointer',
@@ -258,6 +252,14 @@ const styles = {
     padding: '10px 20px',
     margin: '0 10px',
     fontWeight: 'bold',
+    transition: 'background-color 0.2s', // Smooth transition for hover effect
+  },
+  buttonSecondary: { // Additional style for a secondary action
+    backgroundColor: '#28a745', // Different color for differentiation
+  },
+  content: {
+    width: '80%',
+    textAlign: 'center',
   }
 };
 
