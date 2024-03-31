@@ -24,6 +24,7 @@ function CustomerPage() {
           console.error('Error fetching user info:', error);
         }
       }
+      
     };
 
     fetchUserInfo();
@@ -44,10 +45,10 @@ function CustomerPage() {
   };
 
   return (
-    <div>
+    <div className="customer-container"> {/* Make sure to use the class for styling */}
       <h1>Customer Dashboard</h1>
       {userInfo && (
-        <div>
+        <div className="user-info">
           <h2>User Info</h2>
           <p>Email: {userInfo.email || "Not provided"}</p>
           <p>Name: {userInfo.name || "Not provided"}</p>
@@ -60,24 +61,44 @@ function CustomerPage() {
       )}
       <button onClick={fetchMeals}>View Meals</button>
       {meals.length > 0 && (
-        <div>
+        <div className="meals">
           <h2>Meals</h2>
-          {meals.map((meal) => (
-            <div key={meal.id}>
-              <h3>{meal.mealName}</h3>
-              <p>Description: {meal.description || "Not provided"}</p>
-              <p>Rating: {meal.rating || "Not rated"}</p>
-              <p>Price: ${meal.price}</p>
-              <p>Ingredients: {meal.ingredients?.length > 0 ? meal.ingredients?.join(", ") :  "Not provided"}</p>
-              <p>Dietary Restrictions: {meal.dietaryRestrictions?.join(", ") || "None"}</p>
-              <p>Stock Quantity: {meal.stockQuantity || "Not provided" }</p>
-              {meal.imageLink && <img src={meal.imageLink} alt={meal.mealName} style={{width: '100px', height: '100px'}} />}
-            </div>
-          ))}
+          <table>
+            <thead>
+              <tr>
+                <th>Meal Name</th>
+                <th>Description</th>
+                <th>Rating</th>
+                <th>Price</th>
+                <th>Ingredients</th>
+                <th>Dietary Restrictions</th>
+                <th>Stock Quantity</th>
+                <th>Image</th>
+              </tr>
+            </thead>
+            <tbody>
+              {meals.map((meal) => (
+                <tr key={meal.id}>
+                  <td>{meal.mealName}</td>
+                  <td>{meal.description || "Not provided"}</td>
+                  <td>{meal.rating || "Not rated"}</td>
+                  <td>${meal.price}</td>
+                  <td>{meal.ingredients?.length > 0 ? meal.ingredients?.join(", ") : "Not provided"}</td>
+                  <td>{meal.dietaryRestrictions?.join(", ") || "None"}</td>
+                  <td>{meal.stockQuantity || "Not provided"}</td>
+                  <td>
+                    {meal.imageLink && (
+                      <img src={meal.imageLink} alt={meal.mealName} className="meal-image" />
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       )}
     </div>
   );
-}
+}  
 
 export default CustomerPage;

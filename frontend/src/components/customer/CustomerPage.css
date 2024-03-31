@@ -55,3 +55,36 @@ button {
 button:hover {
     background-color: #0056b3;
 }
+
+/* Table styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px; /* Add space above the table */
+}
+
+th, td {
+    padding: 10px;
+    border: 1px solid #ddd; /* Light grey border */
+    text-align: left;
+    background-color: #005435; /* Consistent background for all rows */
+    color: white; /* Text color for readability */
+}
+
+th {
+    background-color: #004225; /* Slightly darker green for header */
+}
+
+tr:hover {
+    background-color: #004225; /* Hover effect for rows */
+    color: white; /* Ensuring text is readable on hover */
+}
+
+.meal img {
+    width: 50px; /* Smaller size for table */
+    height: 50px;
+    border-radius: 50%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
