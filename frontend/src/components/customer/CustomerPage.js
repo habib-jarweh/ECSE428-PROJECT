@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './CustomerPage.css';
 
 
 function CustomerPage() {
-  const [meals, setMeals] = useState([]);
+  const [meals] = useState([]);
   const [userInfo, setUserInfo] = useState(null);
+  const [editMode, setEditMode] = useState(false);
+  const navigate = useNavigate();
+  const handleViewMeals = () => {
+    navigate('/meals');
+  };
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -30,36 +36,114 @@ function CustomerPage() {
     fetchUserInfo();
   }, []);
 
-  const fetchMeals = async () => {
-    try {
-      const response = await fetch('http://localhost:8080/meals/view_all');
-      if (!response.ok) {
-        throw new Error('Could not fetch meals');
-      }
-      const data = await response.json();
-      setMeals(data);
-      console.log(data);
-    } catch (error) {
-      console.error('Error fetching meals:', error);
-    }
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setUserInfo((prev) => ({ ...prev, [name]: value }));
   };
+
+  const handleSelectChange = (e) => {
+    const { name, value } = e.target;
+    // Assuming dietaryRestrictions can be an array for future flexibility
+    setUserInfo((prev) => ({ ...prev, [name]: [value] }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // Logic to update user info
+    setEditMode(false);
+  };
+
 
   return (
     <div className="customer-container"> {/* Make sure to use the class for styling */}
       <h1>Customer Dashboard</h1>
       {userInfo && (
-        <div className="user-info">
-          <h2>User Info</h2>
-          <p>Email: {userInfo.email || "Not provided"}</p>
-          <p>Name: {userInfo.name || "Not provided"}</p>
-          <p>Address: {userInfo.address || "Not provided"}</p>
-          <p>Billing Address: {userInfo.billingAddress || "Not provided"}</p>
-          <p>Phone Number: {userInfo.phoneNumber || "Not provided"}</p>
-          <p>Dietary Restrictions: {userInfo.dietaryRestrictions?.join(", ") || "None"}</p>
-          <p>Weight Goal: {userInfo.weightGoal ? `${userInfo.weightGoal} kg` : "Not provided"}</p>
-        </div>
+        editMode ? (
+          <form onSubmit={handleSubmit}>
+            <div>
+              <label>Email:</label>
+              <input type="email" value={userInfo.email} readOnly />
+            </div>
+            <div>
+              <label>Name:</label>
+              <input
+                type="text"
+                name="name"
+                value={userInfo.name || ''}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div>
+              <label>Address:</label>
+              <input
+                type="text"
+                name="address"
+                value={userInfo.address || ''}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div>
+              <label>Billing Address:</label>
+              <input
+                type="text"
+                name="billingAddress"
+                value={userInfo.billingAddress || ''}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div>
+              <label>Phone Number:</label>
+              <input
+                type="text"
+                name="phoneNumber"
+                value={userInfo.phoneNumber || ''}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div>
+              <label>Dietary Restrictions:</label>
+          <select
+            multiple
+            name="dietaryRestrictions"
+            value={userInfo.dietaryRestrictions || []}
+            onChange={handleSelectChange}
+          >
+            <option value="Vegetarian">Vegetarian</option>
+            <option value="Vegan">Vegan</option>
+            <option value="Gluten-Free">Gluten-Free</option>
+            <option value="Halal">Halal</option>
+            <option value="Peanut-Free">Peanut-Free</option>
+            {/* Add more options as necessary */}
+          </select>
+
+            </div>
+            <div>
+              <label>Weight Goal:</label>
+              <input
+                type="text"
+                name="weightGoal"
+                value={userInfo.weightGoal || ''}
+                onChange={handleInputChange}
+              />
+            </div>
+            <button type="submit">Save Changes</button>
+            <button type="button" onClick={() => setEditMode(false)}>Cancel</button>
+          </form>
+        ) : (
+          <div className="user-info">
+            <h2>User Info</h2>
+            <p>Email: {userInfo.email || "Not provided"}</p>
+            <p>Name: {userInfo.name || "Not provided"}</p>
+            <p>Address: {userInfo.address || "Not provided"}</p>
+            <p>Billing Address: {userInfo.billingAddress || "Not provided"}</p>
+            <p>Phone Number: {userInfo.phoneNumber || "Not provided"}</p>
+            <p>Dietary Restrictions: {userInfo.dietaryRestrictions?.join(", ") || "None"}</p>
+            <p>Weight Goal: {userInfo.weightGoal ? `${userInfo.weightGoal} kg` : "Not provided"}</p>
+            <button onClick={() => setEditMode(true)}>Edit Info</button>
+          </div>
+        )
       )}
-      <button onClick={fetchMeals}>View Meals</button>
+      <button onClick={handleViewMeals}>View Meals</button>
       {meals.length > 0 && (
         <div className="meals">
           <h2>Meals</h2>
@@ -99,6 +183,7 @@ function CustomerPage() {
       )}
     </div>
   );
+  
 }  
 
 export default CustomerPage;
