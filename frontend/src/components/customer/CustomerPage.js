@@ -17,10 +17,10 @@ function CustomerPage() {
       const email = localStorage.getItem('userEmail'); // Retrieve the user's email from localStorage
       if (email) {
         try {
-            const response = await fetch(`http://localhost:8080/customers/userInfo/${encodeURIComponent(email)}`, {
-                method: 'GET',
-                headers: { 'Content-Type': 'application/json' }
-            });
+          const response = await fetch(`http://localhost:8080/customers/userInfo/${encodeURIComponent(email)}`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
+          });
           if (!response.ok) {
             throw new Error('Could not fetch user info');
           }
@@ -30,7 +30,7 @@ function CustomerPage() {
           console.error('Error fetching user info:', error);
         }
       }
-      
+
     };
 
     fetchUserInfo();
@@ -49,10 +49,24 @@ function CustomerPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Logic to update user info
+    try {
+      const response = await fetch('http://localhost:8080/userInfo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(userInfo),
+      });
+      if (!response.ok) {
+        const errorResponse = await response.json();
+        throw new Error(`Failed to update user info: ${errorResponse.message}`);
+      }
+      const updatedUserInfo = await response.json();
+      setUserInfo(updatedUserInfo);
+      console.log('User info updated successfully');
+    } catch (error) {
+      console.error('Error updating user info:', error);
+    }
     setEditMode(false);
   };
-
 
   return (
     <div className="customer-container"> {/* Make sure to use the class for styling */}
@@ -102,19 +116,19 @@ function CustomerPage() {
             </div>
             <div>
               <label>Dietary Restrictions:</label>
-          <select
-            multiple
-            name="dietaryRestrictions"
-            value={userInfo.dietaryRestrictions || []}
-            onChange={handleSelectChange}
-          >
-            <option value="Vegetarian">Vegetarian</option>
-            <option value="Vegan">Vegan</option>
-            <option value="Gluten-Free">Gluten-Free</option>
-            <option value="Halal">Halal</option>
-            <option value="Peanut-Free">Peanut-Free</option>
-            {/* Add more options as necessary */}
-          </select>
+              <select
+                multiple
+                name="dietaryRestrictions"
+                value={userInfo.dietaryRestrictions || []}
+                onChange={handleSelectChange}
+              >
+                <option value="Vegetarian">Vegetarian</option>
+                <option value="Vegan">Vegan</option>
+                <option value="Gluten-Free">Gluten-Free</option>
+                <option value="Halal">Halal</option>
+                <option value="Peanut-Free">Peanut-Free</option>
+                {/* Add more options as necessary */}
+              </select>
 
             </div>
             <div>
@@ -183,7 +197,7 @@ function CustomerPage() {
       )}
     </div>
   );
-  
-}  
+
+}
 
 export default CustomerPage;
