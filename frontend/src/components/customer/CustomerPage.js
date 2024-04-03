@@ -16,6 +16,8 @@ function CustomerPage() {
     const fetchUserInfo = async () => {
       const email = localStorage.getItem('userEmail'); // Retrieve the user's email from localStorage
       if (email) {
+        console.log("called when entering");
+
         try {
           const response = await fetch(`http://localhost:8080/customers/userInfo/${encodeURIComponent(email)}`, {
             method: 'GET',
@@ -25,8 +27,11 @@ function CustomerPage() {
             throw new Error('Could not fetch user info');
           }
           const data = await response.json();
+
+          console.log(data);
           setUserInfo(data);
         } catch (error) {
+
           console.error('Error fetching user info:', error);
         }
       }
@@ -50,7 +55,8 @@ function CustomerPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:8080/userInfo', {
+      console.log(JSON.stringify(userInfo));
+      const response = await fetch('http://localhost:8080/customers/userInfo', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userInfo),
@@ -61,6 +67,7 @@ function CustomerPage() {
       }
       const updatedUserInfo = await response.json();
       setUserInfo(updatedUserInfo);
+      console.log(updatedUserInfo);
       console.log('User info updated successfully');
     } catch (error) {
       console.error('Error updating user info:', error);
@@ -122,11 +129,11 @@ function CustomerPage() {
                 value={userInfo.dietaryRestrictions || []}
                 onChange={handleSelectChange}
               >
-                <option value="Vegetarian">Vegetarian</option>
-                <option value="Vegan">Vegan</option>
-                <option value="Gluten-Free">Gluten-Free</option>
-                <option value="Halal">Halal</option>
-                <option value="Peanut-Free">Peanut-Free</option>
+                <option value="PEANUT">Peanut</option>
+                <option value="VEGAN">Vegan</option>
+                <option value="GLUTEN">Gluten-Free</option>
+                <option value="HALAL">Halal</option>
+                <option value="DAIRY">Dairy</option>
                 {/* Add more options as necessary */}
               </select>
 
@@ -146,11 +153,11 @@ function CustomerPage() {
         ) : (
           <div className="user-info">
             <h2>User Info</h2>
-            <p>Email: {userInfo.email || "Not provided"}</p>
-            <p>Name: {userInfo.name || "Not provided"}</p>
-            <p>Address: {userInfo.address || "Not provided"}</p>
-            <p>Billing Address: {userInfo.billingAddress || "Not provided"}</p>
-            <p>Phone Number: {userInfo.phoneNumber || "Not provided"}</p>
+            <p>Email: {userInfo.email}</p>
+            <p>Name: {userInfo.name}</p>
+            <p>Address: {userInfo.address}</p>
+            <p>Billing Address: {userInfo.billingAddress}</p>
+            <p>Phone Number: {userInfo.phoneNumber}</p>
             <p>Dietary Restrictions: {userInfo.dietaryRestrictions?.join(", ") || "None"}</p>
             <p>Weight Goal: {userInfo.weightGoal ? `${userInfo.weightGoal} kg` : "Not provided"}</p>
             <button onClick={() => setEditMode(true)}>Edit Info</button>

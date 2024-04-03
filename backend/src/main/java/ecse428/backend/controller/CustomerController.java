@@ -61,14 +61,14 @@ public class CustomerController {
                     .collect(Collectors.joining(", "));
             return ResponseEntity.badRequest().body(errors);
         }
-        try {
+        try {            
             // Convert Set<DietaryRestriction> to String[] for the service method
             String[] dietaryRestrictions = customerDto.getDietaryRestrictions().stream()
                     .map(Enum::name) // Assuming DietaryRestriction is an enum and we want its name
                     .toArray(String[]::new);
             
             // Call the service method with the email and converted dietary restrictions
-            boolean success = customerService.setDietaryRestriction(customerDto.getEmail(), dietaryRestrictions);
+            boolean success = customerService.setDietaryRestriction(customerDto.getEmail(),  dietaryRestrictions);
             
             return success
                     ? ResponseEntity.ok().build()
@@ -185,24 +185,38 @@ public class CustomerController {
 
     @GetMapping("/userInfo/{email}")
     public ResponseEntity<?> getUserInfo(@PathVariable String email) {
+
+        System.out.println("entered get info");
+
         try {
+            
             return ResponseEntity.ok(customerService.getUserInfo(email));
         } catch (IllegalArgumentException ex) {
+            
+        System.out.println("illegal exception");
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
     }
 
     @PostMapping("/userInfo")
     public ResponseEntity<?>editUserInfo(@Valid @RequestBody CustomerDto customerDto, BindingResult result){
+
+
+        System.out.println("entered get info");
+
         if (result.hasErrors()) {
+            System.out.println("result has error");
             String errors = result.getAllErrors().stream()
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
                     .collect(Collectors.joining(", "));
             return ResponseEntity.badRequest().body(errors);
         }
         try{
+            System.out.println("makes a service call");
              return ResponseEntity.ok(customerService.editUserInfo(customerDto));
         }catch(IllegalArgumentException ex){
+            
+            System.out.println("illegalException");
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
     }

@@ -68,9 +68,10 @@ function AdminPage() {
         body: JSON.stringify({
           mealName,
           description,
+          stockQuantity,
           price: price ? parseFloat(price) : undefined,
           ingredients: ingredients ? ingredients.split(',').map(ingredient => ingredient.trim()) : [],
-          // Add other fields similarly
+          dietaryRestrictions: dietaryRestrictions ? dietaryRestrictions.split(',').map(restriction => restriction.trim()) : []
         }),
       });
   
@@ -165,7 +166,7 @@ function AdminPage() {
                   <td>{meal.rating || 'N/A'}</td>
                   <td>${meal.price.toFixed(2)}</td>
                   <td>{meal.ingredients.join(", ")}</td>
-                  <td>{meal.dietaryRestrictions || 'None'}</td>
+                  <td>{meal.dietaryRestrictions.join(", ") || 'None'}</td>
                   <td>{meal.imageLink ? <img src={meal.imageLink} alt="Meal" style={{width: '50px', height: '50px'}} /> : 'N/A'}</td>
                   <td>{meal.stockQuantity}</td>
                 </tr>

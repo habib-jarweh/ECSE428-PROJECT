@@ -13,18 +13,18 @@ public class MealDto {
     @NotNull
     @Size(min = 1, message = "Meal name must not be empty.")
     private String mealName;
-    
+
     private String description;
-    
+
     private Double rating;
-    
+
     @NotNull(message = "Price must not be null.")
     private Double price;
-    
+
     private Set<Ingredient> ingredients;
 
     private Set<DietaryRestriction> dietaryRestrictions;
-    
+
     private String imageLink;
 
     private Integer stockQuantity;
@@ -40,6 +40,7 @@ public class MealDto {
         this.ingredients = meal.getIngredients();
         this.imageLink = meal.getImageLink();
         this.stockQuantity = meal.getStockQuantity();
+        this.dietaryRestrictions = meal.getDietaryRestrictions();
     }
 
     // Getters and Setters
@@ -121,4 +122,3 @@ public class MealDto {
         this.stockQuantity = stockQuantity;
     }
 }
-

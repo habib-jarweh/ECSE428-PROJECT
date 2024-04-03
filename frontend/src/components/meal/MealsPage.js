@@ -1,12 +1,11 @@
-// MealsPage.js
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
-import './MealsPage.css'; // Ensure you have the corresponding CSS file for styling
+import { useNavigate } from 'react-router-dom';
+import './MealsPage.css';
 
 function MealsPage() {
   const [meals, setMeals] = useState([]);
-  const navigate = useNavigate(); // Initialize useNavigate
-
+  const [successful, setSuccessful] = useState(false); // using useState for the 'successful' variable
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchMeals = async () => {
@@ -16,7 +15,8 @@ function MealsPage() {
           throw new Error('Could not fetch meals');
         }
         const data = await response.json();
-        setMeals(data);
+        const updatedMeals = data.map(meal => ({ ...meal, orderQuantity: 0 })); // Initialize orderQuantity for each meal
+        setMeals(updatedMeals);
       } catch (error) {
         console.error('Error fetching meals:', error);
       }
@@ -25,15 +25,68 @@ function MealsPage() {
     fetchMeals();
   }, []);
 
-    // Function to navigate back to the CustomerPage
-    const handleBackToDashboard = () => {
-        navigate('/customer'); // Adjust the path as necessary based on your routing setup
-      };
+  const handleBackToDashboard = () => {
+    navigate('/customer');
+  };
+
+  const handleOrder = async () => {
+
+    const email = localStorage.getItem('userEmail'); // Retrieve the user's email from localStorage
+    if (email) {
+
+      const order = { customerEmail: null, mealNames: [] }; // Initialized with an empty array for meal names
+      order.customerEmail = email;
+      var total = 0;
+
+      meals.forEach((meal) => {
+        total += meal.price * meal.orderQuantity;
+
+        for (let i = 0; i < meal.orderQuantity; i++) {
+          order.mealNames.push(meal.mealName);
+        }
+      });
+
+      order.total = total;
+      try {
+        const response = await fetch(`http://localhost:8080/orders/create`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(order)
+        });
+        if (!response.ok) {
+          throw new Error('Could not make order');
+        }
+
+        setSuccessful(true);
+      } catch (error) {
+        console.error('Error ordering:', error);
+      }
+    }
+  };
+  const handleIncrease = (meal) => {
+    const updatedMeals = meals.map(m => {
+      if (m.mealName === meal.mealName) {
+        return { ...m, orderQuantity: m.orderQuantity + 1 };
+      }
+      return m;
+    });
+    setMeals(updatedMeals);
+  };
+
+  const handleDecrease = (meal) => {
+    const updatedMeals = meals.map(m => {
+      if (m.mealName === meal.mealName && m.orderQuantity > 0) {
+        return { ...m, orderQuantity: m.orderQuantity - 1 };
+      }
+      return m;
+    });
+    setMeals(updatedMeals);
+  };
 
   return (
     <div className="meals-container">
       <h1>Meals</h1>
-      <button onClick={handleBackToDashboard}>Back to Dashboard</button> {/* Button to go back */}
+      <button onClick={handleBackToDashboard}>Back to Dashboard</button>
       {meals.length > 0 ? (
         <table>
           <thead>
@@ -45,12 +98,12 @@ function MealsPage() {
               <th>Ingredients</th>
               <th>Dietary Restrictions</th>
               <th>Stock Quantity</th>
-              <th>Image</th>
+              <th>Order Quantity</th>
             </tr>
           </thead>
           <tbody>
             {meals.map((meal) => (
-              <tr key={meal.id}>
+              <tr key={meal.mealName}>
                 <td>{meal.mealName}</td>
                 <td>{meal.description || "Not provided"}</td>
                 <td>{meal.rating || "Not rated"}</td>
@@ -59,9 +112,9 @@ function MealsPage() {
                 <td>{meal.dietaryRestrictions?.join(", ") || "None"}</td>
                 <td>{meal.stockQuantity || "Not provided"}</td>
                 <td>
-                  {meal.imageLink && (
-                    <img src={meal.imageLink} alt={meal.mealName} style={{width: '50px', height: '50px'}} />
-                  )}
+                  <button onClick={() => handleDecrease(meal)}>-</button>
+                  <span>{meal.orderQuantity}</span>
+                  <button onClick={() => handleIncrease(meal)}>+</button>
                 </td>
               </tr>
             ))}
@@ -70,6 +123,10 @@ function MealsPage() {
       ) : (
         <p>No meals available.</p>
       )}
+      <button onClick={handleOrder}>Order</button>
+      <div>
+        {successful ? <p>Your order was successful!</p> : <p></p>}
+      </div>
     </div>
   );
 }

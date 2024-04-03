@@ -17,25 +17,25 @@ function SignUp() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-  
+
     try {
       const response = await fetch('http://localhost:8080/customers/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, name, address, billingAddress, phoneNumber }),
       });
-  
+
       if (!response.ok) {
         // Assuming the API responds with an error message in the body
         const errorResponse = await response.json();
         throw new Error(errorResponse.message || 'Registration failed');
       }
-  
+
       // Assuming registration automatically logs the user in and you wish to store the email
       localStorage.setItem('userEmail', email);
-  
+
       // Redirect to the customer page after successful registration
       navigate('/customer'); // Update this line to match the route of your customer page
     } catch (error) {
@@ -43,14 +43,14 @@ function SignUp() {
       // Here, you could set an error state and display the message to the user
     }
   };
-  
+
 
   return (
     <div className="container">
       <img src={welcomeImage} alt="Welcome" className="welcome-image" />
-    <div className="top-left-logo">
-      <img src={logo} alt="Logo" className="small-logo" />
-    </div>
+      <div className="top-left-logo">
+        <img src={logo} alt="Logo" className="small-logo" />
+      </div>
       <h2>Sign Up</h2>
       <form onSubmit={handleSubmit} className="form-container">
         <div className="inputGroup">
