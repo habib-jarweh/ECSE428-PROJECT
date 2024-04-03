@@ -1,9 +1,9 @@
 package ecse428.backend.dto;
 
-
 import ecse428.backend.model.Customer;
 import ecse428.backend.model.SmartEats;
 import ecse428.backend.model.WeightDate;
+import ecse428.backend.service.CustomerService;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 
@@ -25,14 +25,16 @@ public class CustomerDto {
     private Double weightGoal;
     private Set<WeightDate> weightHistory;
 
-    public CustomerDto() {}
+    public CustomerDto() {
+    }
 
     public CustomerDto(String email, String password) {
         this.email = email;
         this.password = password;
     }
 
-    public CustomerDto(String email, String name, Set<SmartEats.DietaryRestriction> dietaryRestrictions, Double weightGoal, Set<WeightDate> weightHistory) {
+    public CustomerDto(String email, String name, Set<SmartEats.DietaryRestriction> dietaryRestrictions,
+            Double weightGoal, Set<WeightDate> weightHistory) {
         this.email = email;
         this.password = null;
         this.name = name;
@@ -41,14 +43,28 @@ public class CustomerDto {
         this.weightHistory = weightHistory;
     }
 
-    public CustomerDto(String email, String name, String address, String billingAddress, String phoneNumber, String pfpImageLink) {
+    public CustomerDto(String email, String name, String address, String billingAddress, String phoneNumber,
+            String pfpImageLink) {
         this.email = email;
         this.password = null;
         this.name = name;
         this.address = address;
         this.billingAddress = billingAddress;
         this.phoneNumber = phoneNumber;
-        this.pfpImageLink = pfpImageLink; 
+        this.pfpImageLink = pfpImageLink;
+    }
+
+    public CustomerDto(String email, String name, String address, String billingAddress, String phoneNumber,
+            String pfpImageLink, Set<SmartEats.DietaryRestriction> dietaryRestrictions,Double weightGoal) {
+        this.email = email;
+        this.password = null;
+        this.name = name;
+        this.address = address;
+        this.billingAddress = billingAddress;
+        this.phoneNumber = phoneNumber;
+        this.pfpImageLink = pfpImageLink;
+        this.dietaryRestrictions = dietaryRestrictions;
+        this.weightGoal = weightGoal;
     }
 
     public String getEmail() {
@@ -99,7 +115,6 @@ public class CustomerDto {
         this.weightHistory = weightHistory;
     }
 
-    
     public String getAddress() {
         return this.address;
     }
@@ -133,7 +148,8 @@ public class CustomerDto {
     }
 
     public Customer convertToEntity() {
-        return new Customer(this.getEmail(), this.getPassword(), this.getDietaryRestrictions(), this.getWeightGoal(), this.getWeightHistory());  
+        return new Customer(this.getEmail(), this.getPassword(), this.getDietaryRestrictions(), this.getWeightGoal(),
+                this.getWeightHistory());
     }
 
 }

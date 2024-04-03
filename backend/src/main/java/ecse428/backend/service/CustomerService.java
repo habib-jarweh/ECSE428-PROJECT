@@ -27,8 +27,11 @@ public class CustomerService {
 
     public CustomerDto registerCustomer(CustomerDto customerDto) {
         if (validatePassword(customerDto.getPassword())) {
-
-            Customer customer = customerDto.convertToEntity();
+            Customer customer = new Customer(customerDto.getEmail(), customerDto.getName(),
+                    customerDto.getPhoneNumber(), customerDto.getPassword(), customerDto.getAddress(),
+                    customerDto.getBillingAddress(), customerDto.getPfpImageLink(),
+                    customerDto.getDietaryRestrictions(),
+                    customerDto.getWeightGoal(), customerDto.getWeightHistory());
 
             try {
                 Customer ex_customer = customerRepository.findCustomerByEmail(customerDto.getEmail());
@@ -41,7 +44,7 @@ public class CustomerService {
                 throw new IllegalArgumentException("A user with this email already exists.", ex);
             }
             return new CustomerDto(customer.getEmail(), null);
-        }else{
+        } else {
             throw new IllegalArgumentException("Password must be at least 8 characters long.");
         }
     }
@@ -101,25 +104,22 @@ public class CustomerService {
 
     }
 
-
-
-
     protected Set<DietaryRestriction> convertDietaryRestriction(String[] dietaryRestriction) {
         if (dietaryRestriction == null) {
             throw new IllegalArgumentException("Dietary restriction cannot be null.");
         }
-        
+
         Set<String> uniqueRestrictions = new HashSet<>();
         Set<DietaryRestriction> set = new HashSet<>();
-        
+
         for (String restriction : dietaryRestriction) {
             String upperCaseRestriction = restriction.toUpperCase();
-            
+
             // Check for duplicates
             if (!uniqueRestrictions.add(upperCaseRestriction)) {
                 throw new IllegalArgumentException("Duplicate dietary restriction detected: " + restriction);
             }
-            
+
             try {
                 set.add(DietaryRestriction.valueOf(upperCaseRestriction));
             } catch (IllegalArgumentException e) {
@@ -129,8 +129,8 @@ public class CustomerService {
         return set;
     }
 
-    protected boolean validatePassword(String password){
-        if(password == null || password.isEmpty()){
+    protected boolean validatePassword(String password) {
+        if (password == null || password.isEmpty()) {
             throw new IllegalArgumentException("Password cannot be empty.");
         }
         if (password.length() < 8) {
@@ -138,35 +138,39 @@ public class CustomerService {
         }
         return true;
     }
+
     public CustomerDto addUpdateWeightGoal(CustomerDto customerDto, Double weightGoal) {
-    
+
         Customer customer = customerRepository.findCustomerByEmail(customerDto.getEmail());
-    
+
         if (customer == null) {
-            throw new IllegalArgumentException("Could not find customer with email address " + customerDto.getEmail() + ".");
+            throw new IllegalArgumentException(
+                    "Could not find customer with email address " + customerDto.getEmail() + ".");
         }
-    
+
         if (weightGoal <= 0) {
             throw new IllegalArgumentException("Weight goal must be greater than 0.");
         }
-    
+
         // Update the customer's weight goal
-          customer.setWeightGoal(weightGoal);
-    
+        customer.setWeightGoal(weightGoal);
+
         // Save the updated customer
         customerRepository.save(customer);
-    
-        // Return the updated customer information, excluding sensitive details like password
-       return customer.convertToDto(); // Make sure the convertToDto method does not include the password
-      }
-      
+
+        // Return the updated customer information, excluding sensitive details like
+        // password
+        return customer.convertToDto(); // Make sure the convertToDto method does not include the password
+    }
+
     public CustomerDto setWeightGoal(CustomerDto customerDto, Double weightGoal) {
         Customer customer = customerRepository.findCustomerByEmail(customerDto.getEmail());
-    
+
         if (customer == null) {
-            throw new IllegalArgumentException("Could not find customer with email address " + customerDto.getEmail() + ".");
+            throw new IllegalArgumentException(
+                    "Could not find customer with email address " + customerDto.getEmail() + ".");
         }
-    
+
         customer.setWeightGoal(weightGoal);
         customerRepository.save(customer);
         return customer.convertToDto();
@@ -182,23 +186,25 @@ public class CustomerService {
         return weightGoal;
 
     }
-    public CustomerDto addUpdateWeightHistory(CustomerDto customerDto,Double weight) {
+
+    public CustomerDto addUpdateWeightHistory(CustomerDto customerDto, Double weight) {
 
         Customer customer = customerRepository.findCustomerByEmail(customerDto.getEmail());
 
         if (customer == null) {
-        throw new IllegalArgumentException("Could not find customer with email address " + customerDto.getEmail() + ".");
+            throw new IllegalArgumentException(
+                    "Could not find customer with email address " + customerDto.getEmail() + ".");
         }
 
         Set<WeightDate> weightHistory = customer.getWeightHistory();
 
         for (WeightDate pair : weightHistory) {
-        if (pair.getDate().equals(LocalDate.now())) {
-            pair.setWeight(weight);
+            if (pair.getDate().equals(LocalDate.now())) {
+                pair.setWeight(weight);
 
-            customerRepository.save(customer);
-            return customer.convertToDto();
-        }
+                customerRepository.save(customer);
+                return customer.convertToDto();
+            }
         }
 
         weightHistory.add(new WeightDate(LocalDate.now(), weight));
@@ -208,13 +214,14 @@ public class CustomerService {
 
     public List<CustomerDto> getAllCustomers() {
 
-        //Return null if no customers
-        if(customerRepository.findAll() == null || customerRepository.findAll().isEmpty()){
+        // Return null if no customers
+        if (customerRepository.findAll() == null || customerRepository.findAll().isEmpty()) {
             return null;
         }
 
         return customerRepository.findAll().stream().map(Customer::convertToDto).collect(Collectors.toList());
     }
+
     public String deleteCustomer(String identifier) {
         Customer customer = customerRepository.findCustomerByEmail(identifier);
         if (customer == null) {
@@ -223,43 +230,75 @@ public class CustomerService {
         customerRepository.delete(customer);
         return "Customer with email " + identifier + " successfully deleted.";
     }
-    
-    
+
     public CustomerDto getUserInfo(String email) {
+
+        System.out.println(email);
 
         Customer customer = customerRepository.findCustomerByEmail(email);
 
-        return customer.convertToDto() ;
+        if (customer != null) {
+
+            System.out.println(customer.getEmail());
+
+            System.out.println(customer.getName());
+
+            System.out.println(customer.getAddress());
+
+            System.out.println(customer.getBillingAddress());
+
+            System.out.println(customer.getPhoneNumber());
+
+        }
+
+        return new CustomerDto(customer.getEmail(), customer.getName(), customer.getAddress(),
+                customer.getBillingAddress(), customer.getPhoneNumber(), customer.getPfpImageLink(),
+                customer.getDietaryRestrictions(), customer.getWeightGoal());
     }
 
     public CustomerDto editUserInfo(CustomerDto customerDto) {
-        
+
+        System.out.println("entered function");
+
         Customer customer = customerRepository.findCustomerByEmail(customerDto.getEmail());
 
-        if(customerDto.getAddress() != null){
+        System.out.println(customerDto.getEmail());
+
+        if (customerDto.getAddress() != null) {
             customer.setAddress(customerDto.getAddress());
         }
 
-        if(customerDto.getBillingAddress()!= null){
+        if (customerDto.getBillingAddress() != null) {
             customer.setBillingAddress(customerDto.getBillingAddress());
         }
 
-        if(customerDto.getPhoneNumber() != null){
+        if (customerDto.getPhoneNumber() != null) {
             customer.setPhoneNumber(customerDto.getPhoneNumber());
         }
 
-        if(customerDto.getName() != null){
+        if (customerDto.getName() != null) {
             customer.setName(customerDto.getName());
         }
 
-        if(customerDto.getPfpImageLink() != null){
+        if (customerDto.getPfpImageLink() != null) {
             customer.setPfpImageLink(customerDto.getPfpImageLink());
         }
 
-        customerRepository.save(customer);
+        if (customerDto.getDietaryRestrictions() != null) {
+            customer.setDietaryRestrictions(customerDto.getDietaryRestrictions());
+        }
 
-        return new CustomerDto(customer.getEmail(),customer.getName(),customer.getAddress(),customer.getBillingAddress(),customer.getPhoneNumber(),customer.getPfpImageLink());
+        if (customerDto.getWeightGoal() != null) {
+            customer.setWeightGoal(customerDto.getWeightGoal());
+        }
+
+        System.out.println("edit user function");
+
+        customerRepository.save(customer);
+        
+        return new CustomerDto(customer.getEmail(), customer.getName(), customer.getAddress(),
+                customer.getBillingAddress(), customer.getPhoneNumber(), customer.getPfpImageLink(),
+                customer.getDietaryRestrictions(), customer.getWeightGoal());
     }
-    
 
 }
